@@ -1,0 +1,2623 @@
+<!DOCTYPE html>
+<html lang="my" class="light">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+    <title>SalesDash Mobile</title>
+
+    
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <meta name="apple-mobile-web-app-title" content="SalesDash">
+
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <meta name="application-name" content="SalesDash">
+
+    <meta name="msapplication-TileColor" content="#667eea">
+
+    <meta name="msapplication-TileImage" content="data:image/svg+xml;base64,...">
+
+    
+
+    <link rel="apple-touch-icon" sizes="57x57" href="data:image/svg+xml;base64,...">
+
+    <link rel="apple-touch-icon" sizes="60x60" href="data:image/svg+xml;base64,...">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,...">
+
+
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    
+
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Sales Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-beautify@1.14.7/js/lib/beautify-html.js"></script>
+    <style>
+        :root {
+            --bg-color: #f4f7fe;
+            --card-bg-color: #ffffff;
+            --text-color: #1a202c;
+            --text-muted-color: #718096;
+            --border-color: #e2e8f0;
+            --primary-color: #2563eb;
+            --primary-hover-color: #1d4ed8;
+            --primary-start-color: #4f46e5;
+            --primary-end-color: #7c3aed;
+            --toast-bg: #192133;
+            --toast-text: #e2e8f0;
+        }
+
+        html.dark {
+            --bg-color: #0b1120;
+            --card-bg-color: #192133;
+            --text-color: #e2e8f0;
+            --text-muted-color: #a0aec0;
+            --border-color: #2d3748;
+            --toast-bg: #e2e8f0;
+            --toast-text: #1a202c;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        .card {
+            background-color: var(--card-bg-color);
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+            border: 1px solid var(--border-color);
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .btn {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: translateY(0);
+        }
+
+        .btn-primary-solid {
+            background-color: var(--primary-color);
+        }
+        .btn-primary-solid:hover {
+            background-color: var(--primary-hover-color);
+            box-shadow: 0 7px 14px rgba(37, 99, 235, 0.25), 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-input {
+             background-color: var(--bg-color);
+             border-color: var(--border-color);
+        }
+        .form-input:focus {
+            --tw-ring-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        .form-input.invalid {
+            border-color: #ef4444; /* red-500 */
+            --tw-ring-color: #ef4444;
+        }
+
+        .modal {
+            transition: opacity 0.25s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .tab {
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .tab.active {
+            color: var(--primary-start-color);
+            border-bottom-color: var(--primary-start-color);
+        }
+        html.dark .tab.active {
+            color: #a78bfa;
+            border-bottom-color: #a78bfa;
+        }
+        .tab.disabled {
+            color: var(--text-muted-color);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        .pagination-btn {
+            min-width: 40px;
+        }
+        .pagination-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .dropdown-menu {
+            animation: slideIn 0.2s ease-out forwards;
+        }
+
+        @keyframes toastIn {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes toastOut {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(100%); opacity: 0; }
+        }
+        .toast-in { animation: toastIn 0.5s ease-out forwards; }
+        .toast-out { animation: toastOut 0.5s ease-in forwards; }
+        
+        .theme-switch-wrapper { display: flex; align-items: center; }
+        .theme-switch { display: inline-block; height: 26px; position: relative; width: 50px; }
+        .theme-switch input { display:none; }
+        .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
+        .slider:before { background-color: #fff; bottom: 3px; content: ""; height: 20px; left: 3px; position: absolute; transition: .4s; width: 20px; border-radius: 50%; }
+        input:checked + .slider { background-image: linear-gradient(to right, var(--primary-start-color), var(--primary-end-color)); }
+        input:checked + .slider:before { transform: translateX(24px); }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .pro-feature {
+            display: none; /* Hide Pro features by default */
+        }
+    </style>
+</head>
+<body>
+    <!-- Initial loading screen -->
+    <div id="initial-loader" class="fixed inset-0 flex flex-col items-center justify-center bg-[var(--bg-color)] z-[100]">
+        <div class="flex items-center gap-4 mb-4">
+            <i class="fas fa-chart-line text-4xl text-[var(--primary-color)]"></i>
+            <h1 class="text-4xl font-bold">SalesDash</h1>
+        </div>
+        <div class="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-[var(--primary-color)]"></div>
+        <p class="mt-4 text-[var(--text-muted-color)]">Loading your dashboard...</p>
+    </div>
+
+    <!-- Auth Section -->
+    <div id="auth-section" class="min-h-screen bg-slate-50 dark:bg-gray-900 grid lg:grid-cols-2 hidden">
+        <!-- Left Info Panel -->
+        <div class="hidden lg:flex flex-col justify-center items-center bg-gradient-to-br from-indigo-600 to-purple-700 text-white p-12">
+            <div class="max-w-md text-center">
+                <div class="flex items-center justify-center gap-4 mb-6">
+                    <i class="fas fa-chart-line text-5xl"></i>
+                    <h1 class="text-5xl font-bold">SalesDash</h1>
+                </div>
+                <p class="text-lg text-indigo-200 mb-8">သင့်ရဲ့နေ့စဉ်အရောင်းအဝယ်တွေကို လွယ်ကူစွာ စီမံခန့်ခွဲပြီး အမြတ်အစွန်းကို ခြေရာခံပါ။</p>
+                <div class="space-y-4 text-left">
+                    <div class="flex items-start gap-4">
+                        <i class="fas fa-check-circle text-2xl text-green-400 mt-1"></i>
+                        <div>
+                            <h3 class="font-semibold">Real-time Data Sync</h3>
+                            <p class="text-indigo-200 text-sm">Data များကို အချိန်နဲ့တပြေးညီ သိမ်းဆည်းပြီး မည်သည့်နေရာကမဆို ကြည့်ရှုနိုင်ခြင်း။</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <i class="fas fa-check-circle text-2xl text-green-400 mt-1"></i>
+                        <div>
+                            <h3 class="font-semibold">Offline Access</h3>
+                            <p class="text-indigo-200 text-sm">အင်တာနက်မရှိချိန်တွင်လည်း စာရင်းများထည့်သွင်းနိုင်ပြီး online ပြန်ဖြစ်ချိန်တွင် အလိုအလျောက် sync လုပ်ပေးခြင်း။</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <i class="fas fa-check-circle text-2xl text-green-400 mt-1"></i>
+                        <div>
+                            <h3 class="font-semibold">Data Export</h3>
+                            <p class="text-indigo-200 text-sm">သင်၏အရောင်းစာရင်းများကို CSV file ဖြင့် အလွယ်တကူ export လုပ်နိုင်ခြင်း။</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Login Form Panel -->
+        <div class="flex flex-col items-center justify-center p-6 sm:p-12">
+            <div class="absolute top-6 right-6">
+                 <div class="theme-switch-wrapper flex items-center gap-3">
+                    <i class="fas fa-sun text-yellow-500"></i>
+                    <label class="theme-switch" for="auth-theme-toggle">
+                        <input type="checkbox" id="auth-theme-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <i class="fas fa-moon text-indigo-300"></i>
+                </div>
+            </div>
+            <div class="max-w-sm w-full">
+                 <div class="lg:hidden flex items-center gap-3 mb-8">
+                    <i class="fas fa-chart-line text-2xl text-[var(--primary-color)]"></i>
+                    <span class="text-2xl font-bold">SalesDash</span>
+                </div>
+                <h2 class="text-3xl font-bold">Welcome Back!</h2>
+                <p class="text-sm text-[var(--text-muted-color)] mt-1 mb-8">Please login to your account</p>
+                
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-[var(--text-muted-color)] mb-1">Email</label>
+                        <input type="email" id="email" placeholder="you@example.com" class="form-input w-full px-4 py-3 rounded-lg focus:ring-2" required>
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-[var(--text-muted-color)] mb-1">Password</label>
+                        <input type="password" id="password" placeholder="••••••••" class="form-input w-full px-4 py-3 rounded-lg focus:ring-2" required>
+                    </div>
+                    <p id="auth-error" class="text-sm text-center h-4"></p>
+                    <div class="pt-2">
+                        <button type="submit" id="login-btn" class="btn btn-primary-solid w-full text-white font-bold py-3 px-4 rounded-lg flex justify-center items-center">
+                            <span class="btn-text">Login</span>
+                            <i class="fas fa-spinner spinner hidden ml-2"></i>
+                        </button>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-sm text-[var(--text-muted-color)]">
+                            Don't have an account? 
+                            <button type="button" id="register-btn" class="font-medium text-[var(--primary-color)] hover:underline">Create one</button>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Section -->
+    <div id="app" class="container mx-auto p-2 sm:p-4 md:p-6 lg:p-8 max-w-7xl hidden">
+        <header class="flex flex-col sm:flex-row justify-between items-center mb-6 sm:mb-10 gap-4">
+            <div>
+                <div class="flex items-center gap-3">
+                    <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-[var(--primary-start-color)] to-[var(--primary-end-color)]">Sales Dashboard</h1>
+                    <span id="plan-badge" class="px-3 py-1 text-xs font-bold text-white rounded-full"></span>
+                </div>
+                <div class="flex items-center gap-2 mt-2">
+                    <div id="connection-status" class="w-3 h-3 rounded-full bg-gray-400 transition-colors" title="Connecting..."></div>
+                    <p id="user-email-display" class="text-[var(--text-muted-color)] text-sm"></p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 sm:gap-4">
+                <div class="theme-switch-wrapper flex items-center gap-3">
+                    <i class="fas fa-sun text-yellow-500"></i>
+                    <label class="theme-switch" for="app-theme-toggle">
+                        <input type="checkbox" id="app-theme-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <i class="fas fa-moon text-indigo-300"></i>
+                </div>
+                
+                <div class="relative">
+                    <button id="more-menu-btn" class="bg-gray-200 dark:bg-gray-700 text-[var(--text-color)] font-bold py-2 px-3 sm:px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition flex items-center gap-2">
+                        <span>More</span>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="more-menu-dropdown" class="dropdown-menu absolute right-0 mt-2 w-64 card rounded-lg shadow-xl z-20 hidden">
+                        <div class="p-4 border-b border-[var(--border-color)]">
+                            <p class="font-semibold text-sm">Signed in as</p>
+                            <p id="dropdown-user-email" class="text-sm truncate text-[var(--text-muted-color)]"></p>
+                        </div>
+                        <div class="py-2">
+                            <a href="#" id="menu-profile-btn" class="flex items-center px-4 py-2 text-sm hover:bg-[var(--bg-color)]">
+                                <i class="fas fa-user-cog w-6 text-center mr-2 text-[var(--text-muted-color)]"></i> Profile Settings
+                            </a>
+                            <a href="#" id="menu-subscription-btn" class="flex items-center px-4 py-2 text-sm hover:bg-[var(--bg-color)]">
+                                <i class="fas fa-gem w-6 text-center mr-2 text-[var(--text-muted-color)]"></i> My Subscription
+                            </a>
+                            <a href="#" id="menu-support-btn" class="pro-feature flex items-center px-4 py-2 text-sm hover:bg-[var(--bg-color)] text-green-600 dark:text-green-400 font-semibold">
+                                <i class="fas fa-headset w-6 text-center mr-2"></i> Priority Support
+                            </a>
+                        </div>
+                        <div class="py-2 border-t border-[var(--border-color)]">
+                            <a href="#" id="menu-about-btn" class="flex items-center px-4 py-2 text-sm hover:bg-[var(--bg-color)]">
+                                <i class="fas fa-info-circle w-6 text-center mr-2 text-[var(--text-muted-color)]"></i> About SalesDash
+                            </a>
+                        </div>
+                        <div class="p-2 border-t border-[var(--border-color)]">
+                            <button id="logout-btn" class="w-full text-left flex items-center px-4 py-2 text-sm text-red-500 hover:bg-red-500 hover:text-white rounded-md">
+                               <i class="fas fa-sign-out-alt w-6 text-center mr-2"></i> Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main id="main-content">
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8">
+                 <div class="card p-3 sm:p-6 rounded-2xl fade-in relative overflow-hidden">
+                    <i class="fa-solid fa-sack-dollar absolute -right-4 -top-4 text-7xl sm:text-8xl text-green-500/10"></i>
+                    <h3 class="text-[var(--text-muted-color)] font-semibold mb-2 uppercase text-xs sm:text-sm tracking-wider">ယနေ့ရောင်းရငွေ</h3>
+                    <p id="today-total" class="text-xl sm:text-3xl font-bold text-green-500">0 MMK</p>
+                </div>
+                 <div class="card p-3 sm:p-6 rounded-2xl fade-in relative overflow-hidden" style="animation-delay: 100ms;">
+                    <i class="fa-solid fa-arrow-trend-up absolute -right-4 -top-4 text-7xl sm:text-8xl text-teal-500/10"></i>
+                    <h3 class="text-[var(--text-muted-color)] font-semibold mb-2 uppercase text-xs sm:text-sm tracking-wider">ယနေ့အမြတ်</h3>
+                    <p id="today-profit" class="text-xl sm:text-3xl font-bold text-teal-500">0 MMK</p>
+                </div>
+                 <div class="card p-3 sm:p-6 rounded-2xl fade-in relative overflow-hidden" style="animation-delay: 200ms;">
+                    <i class="fa-solid fa-chart-line absolute -right-4 -top-4 text-7xl sm:text-8xl text-blue-500/10"></i>
+                    <h3 class="text-[var(--text-muted-color)] font-semibold mb-2 uppercase text-xs sm:text-sm tracking-wider">ယခုလရောင်းရငွေ</h3>
+                    <p id="month-total" class="text-xl sm:text-3xl font-bold text-blue-500">0 MMK</p>
+                </div>
+                 <div class="card p-3 sm:p-6 rounded-2xl fade-in relative overflow-hidden" style="animation-delay: 300ms;">
+                    <i class="fa-solid fa-chart-pie absolute -right-4 -top-4 text-7xl sm:text-8xl text-indigo-500/10"></i>
+                    <h3 class="text-[var(--text-muted-color)] font-semibold mb-2 uppercase text-xs sm:text-sm tracking-wider">ယခုလအမြတ်</h3>
+                    <p id="month-profit" class="text-xl sm:text-3xl font-bold text-indigo-500">0 MMK</p>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="mb-8 border-b border-[var(--border-color)]">
+                <nav class="flex space-x-4 sm:space-x-8 overflow-x-auto pb-2">
+                    <button id="tab-daily" class="tab active pb-3 pt-4 px-1 font-medium text-sm sm:text-base whitespace-nowrap">
+                        <i class="fas fa-calendar-day mr-2"></i>နေ့စဉ်စာရင်း
+                    </button>
+                    <button id="tab-monthly" class="tab pb-3 pt-4 px-1 font-medium text-sm sm:text-base text-[var(--text-muted-color)] whitespace-nowrap">
+                        <i class="fas fa-table mr-2"></i>လချုပ်စာရင်း
+                    </button>
+                    <button id="tab-customers" class="tab pb-3 pt-4 px-1 font-medium text-sm sm:text-base text-[var(--text-muted-color)] whitespace-nowrap">
+                        <i class="fas fa-users mr-2"></i>ဝယ်သူများ
+                    </button>
+                    <button id="tab-expenses" class="tab pb-3 pt-4 px-1 font-medium text-sm sm:text-base text-[var(--text-muted-color)] whitespace-nowrap">
+                        <i class="fas fa-file-invoice-dollar mr-2"></i>အသုံးစရိတ်
+                    </button>
+                    <button id="tab-analysis" class="tab pb-3 pt-4 px-1 font-medium text-sm sm:text-base text-[var(--text-muted-color)] whitespace-nowrap">
+                        <i class="fas fa-chart-bar mr-2"></i>သုံးသပ်ချက်
+                    </button>
+                    <button id="tab-staff" class="pro-feature tab pb-3 pt-4 px-1 font-medium text-sm sm:text-base text-[var(--text-muted-color)] whitespace-nowrap">
+                        <i class="fas fa-user-friends mr-2"></i>ဝန်ထမ်းများ
+                    </button>
+                    <button id="tab-goals" class="tab pb-3 pt-4 px-1 font-medium text-sm sm:text-base text-[var(--text-muted-color)] whitespace-nowrap">
+                        <i class="fas fa-flag-checkered mr-2"></i>ရည်မှန်းချက် & Reports
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Daily View Content -->
+            <div id="daily-view">
+                <!-- Add Sale Form -->
+                <div class="card p-4 sm:p-6 md:p-8 rounded-2xl mb-8 fade-in" style="animation-delay: 400ms;">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-6 border-b border-[var(--border-color)] pb-4">အရောင်းအသစ်ထည့်ရန်</h2>
+                    <form id="add-sale-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                        <div>
+                            <label for="sale-date" class="block text-sm font-medium text-[var(--text-muted-color)] mb-1">ရက်စွဲ</label>
+                            <input type="date" id="sale-date" class="form-input w-full px-4 py-2 rounded-lg focus:ring-2" required>
+                        </div>
+                        <div>
+                            <label for="sale-customer" class="block text-sm font-medium text-[var(--text-muted-color)] mb-1">ဖောက်သည်အမည် (သို့) မှတ်ထားချင်တဲ့ Order ID</label>
+                            <input type="text" id="sale-customer" list="customer-list" placeholder="ဝယ်သူအသစ် သို့မဟုတ် ရွေးချယ်ပါ" class="form-input w-full px-4 py-2 rounded-lg focus:ring-2">
+                            <datalist id="customer-list"></datalist>
+                        </div>
+                        <div>
+                            <label for="product-name" class="block text-sm font-medium text-[var(--text-muted-color)] mb-1">ပစ္စည်းအမျိုးအစားများ</label>
+                            <input type="text" id="product-name" list="product-list" value="VPN" class="form-input w-full px-4 py-2 rounded-lg focus:ring-2" required>
+                            <datalist id="product-list"></datalist>
+                        </div>
+                        <div>
+                            <label for="vpn-plan" class="block text-sm font-medium text-[var(--text-muted-color)] mb-1">သက်တမ်း / Package</label>
+                            <input type="text" id="vpn-plan" list="plan-list" value="1 Month" class="form-input w-full px-4 py-2 rounded-lg focus:ring-2" required>
+                            <datalist id="plan-list"></datalist>
+                        </div>
+                        <div>
+                            <label for="quantity" class="block text-sm font-medium text-[var(--text-muted-color)] mb-1">အရေအတွက်</label>
+                            <input type="number" id="quantity" min="1" value="1" class="form-input w-full px-4 py-2 rounded-lg focus:ring-2" required>
+                        </div>
+                        <div>
+                            <label for="price" class="block text-sm font-medium text-[var(--text-muted-color)] mb-1">တစ်ခုစီဈေးနှုန်း</label>
+                            <input type="number" id="price" min="0" placeholder="0" class="form-input w-full px-4 py-2 rounded-lg focus:ring-2" required>
+                        </div>
+                         <div>
+                            <label for="cost" class="block text-sm font-medium text-[var(--text-muted-color)] mb-1">ကုန်ကျငွေ (တစ်ခု)</label>
+                            <input type="number" id="cost" min="0" value="0" class="form-input w-full px-4 py-2 rounded-lg focus:ring-2" required>
+                        </div>
+                        <div class="lg:col-span-4 md:col-span-2">
+                            <button type="submit" id="add-sale-btn" class="btn btn-primary-solid w-full text-white font-bold py-2 px-4 sm:py-3 rounded-lg focus:outline-none focus:ring-4 focus:ring-indigo-300 flex items-center justify-center gap-2">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>စာရင်းသွင်းမည်</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Sales List -->
+                <div class="p-1 fade-in" style="animation-delay: 500ms;">
+                    <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+                        <h2 class="text-xl sm:text-2xl font-bold">အရောင်းစာရင်း</h2>
+                        <div class="flex flex-wrap items-center gap-4 p-2 card rounded-xl">
+                            <div class="relative flex-grow">
+                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted-color)]"></i>
+                                <input type="text" id="search-input" placeholder="Search..." class="form-input w-full pl-10 pr-4 py-2 rounded-lg focus:ring-1">
+                            </div>
+                            <div class="flex items-center space-x-2">
+                               <label for="filter-start-date" class="text-sm font-medium text-[var(--text-muted-color)]">From:</label>
+                               <input type="date" id="filter-start-date" class="form-input px-3 py-2 rounded-lg focus:ring-1 w-32 sm:w-36">
+                            </div>
+                            <div class="flex items-center space-x-2">
+                               <label for="filter-end-date" class="text-sm font-medium text-[var(--text-muted-color)]">To:</label>
+                               <input type="date" id="filter-end-date" class="form-input px-3 py-2 rounded-lg focus:ring-1 w-32 sm:w-36">
+                            </div>
+                            <button id="clear-filter-btn" class="text-sm text-[var(--primary-start-color)] hover:underline">Clear</button>
+                            <div class="flex gap-2">
+                                <button id="export-csv-btn" class="bg-green-600 text-white font-bold py-2 px-3 sm:px-4 rounded-lg hover:bg-green-700 transition duration-300 text-sm flex items-center gap-2" title="Export filtered results">
+                                    <i class="fas fa-file-csv"></i>
+                                   <span class="hidden sm:inline">Export Filtered</span>
+                                </button>
+                                <button id="export-all-csv-btn" class="bg-blue-600 text-white font-bold py-2 px-3 sm:px-4 rounded-lg hover:bg-blue-700 transition duration-300 text-sm flex items-center gap-2" title="Export all records">
+                                    <i class="fas fa-file-alt"></i>
+                                   <span class="hidden sm:inline">Export All</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="sales-list-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+                        <!-- Sale cards will be inserted here -->
+                    </div>
+                    <div id="pagination-controls" class="flex justify-center items-center mt-8 space-x-1 sm:space-x-2">
+                        <!-- Pagination buttons will be inserted here -->
+                    </div>
+                    <div id="no-sales-message" class="text-center py-16 text-[var(--text-muted-color)] card rounded-2xl hidden">
+                        <i class="fas fa-box-open text-5xl mb-4"></i>
+                        <p class="text-lg font-semibold">အရောင်းစာရင်းမရှိသေးပါ</p>
+                        <p class="text-sm mt-2">အပေါ်ရှိ Form မှ စာရင်းအသစ်များ စတင်ထည့်သွင်းနိုင်ပါသည်</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly View Content -->
+            <div id="monthly-view" class="hidden fade-in">
+                 <div class="w-full">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-4">လချုပ်စာရင်း</h2>
+                    <div id="monthly-summary-table-container" class="card rounded-2xl overflow-x-auto">
+                        <!-- Monthly summary table will be here -->
+                    </div>
+                </div>
+                 <div id="no-monthly-data-message" class="text-center py-16 text-[var(--text-muted-color)] card rounded-2xl hidden mt-8">
+                    <i class="fas fa-chart-area text-5xl mb-4"></i>
+                    <p class="text-lg font-semibold">လချုပ်စာရင်း မရှိသေးပါ</p>
+                </div>
+            </div>
+            
+            <!-- Customers View Content -->
+            <div id="customers-view" class="hidden fade-in">
+                <!-- Add Customer Form -->
+                <div class="card p-4 sm:p-6 md:p-8 rounded-2xl mb-8">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-6 border-b border-[var(--border-color)] pb-4">ဝယ်သူအသစ်ထည့်ရန်</h2>
+                    <form id="add-customer-form" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                        <div>
+                            <label for="customer-name" class="block text-sm font-medium text-[var(--text-muted-color)] mb-1">အမည်</label>
+                            <input type="text" id="customer-name" placeholder="Customer Name" class="form-input w-full px-4 py-2 rounded-lg focus:ring-2" required>
+                        </div>
+                        <div>
+                            <label for="customer-phone" class="block text-sm font-medium text-[var(--text-muted-color)] mb-1">ဖုန်းနံပါတ် (Optional)</label>
+                            <input type="text" id="customer-phone" placeholder="09..." class="form-input w-full px-4 py-2 rounded-lg focus:ring-2">
+                        </div>
+                        <div class="md:col-span-3">
+                            <button type="submit" id="add-customer-btn" class="btn btn-primary-solid w-full text-white font-bold py-2 px-4 sm:py-3 rounded-lg flex items-center justify-center gap-2">
+                                <i class="fas fa-user-plus"></i>
+                                <span>ဝယ်သူအသစ်ထည့်မည်</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Customers List -->
+                <div class="p-1">
+                    <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+                        <h2 class="text-xl sm:text-2xl font-bold">ဝယ်သူများစာရင်း</h2>
+                        <div class="relative flex-grow max-w-md">
+                            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted-color)]"></i>
+                            <input type="text" id="customer-search-input" placeholder="အမည် သို့မဟုတ် ဖုန်းဖြင့်ရှာပါ..." class="form-input w-full pl-10 pr-4 py-2 rounded-lg focus:ring-1">
+                        </div>
+                    </div>
+                    <div id="customers-list-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+                        <!-- Customer cards will be inserted here -->
+                    </div>
+                    <div id="no-customers-message" class="text-center py-16 text-[var(--text-muted-color)] card rounded-2xl hidden">
+                        <i class="fas fa-users-slash text-5xl mb-4"></i>
+                        <p class="text-lg font-semibold">ဝယ်သူစာရင်းမရှိသေးပါ</p>
+                        <p class="text-sm mt-2">အပေါ်ရှိ Form မှ ဝယ်သူအသစ်များ စတင်ထည့်သွင်းနိုင်ပါသည်</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expenses View Content -->
+            <div id="expenses-view" class="hidden fade-in">
+                <!-- Add Expense Form -->
+                <div class="card p-4 sm:p-6 md:p-8 rounded-2xl mb-8">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-6 border-b border-[var(--border-color)] pb-4">အသုံးစရိတ်အသစ်ထည့်ရန်</h2>
+                    <form id="add-expense-form" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                        <div>
+                            <label for="expense-date" class="block text-sm font-medium text-[var(--text-muted-color)] mb-1">ရက်စွဲ</label>
+                            <input type="date" id="expense-date" class="form-input w-full px-4 py-2 rounded-lg focus:ring-2" required>
+                        </div>
+                        <div>
+                            <label for="expense-category" class="block text-sm font-medium text-[var(--text-muted-color)] mb-1">အမျိုးအစား</label>
+                            <input type="text" id="expense-category" list="expense-category-list" placeholder="ဥပမာ: ကြော်ငြာခ" class="form-input w-full px-4 py-2 rounded-lg focus:ring-2" required>
+                            <datalist id="expense-category-list">
+                                <option value="ကြော်ငြာခ"></option>
+                                <option value="ရုံးသုံးပစ္စည်း"></option>
+                                <option value="ဝန်ထမ်းလစာ"></option>
+                                <option value="အခြား"></option>
+                            </datalist>
+                        </div>
+                         <div>
+                            <label for="expense-amount" class="block text-sm font-medium text-[var(--text-muted-color)] mb-1">ပမာဏ</label>
+                            <input type="number" id="expense-amount" min="0" placeholder="0" class="form-input w-full px-4 py-2 rounded-lg focus:ring-2" required>
+                        </div>
+                        <div class="md:col-span-3">
+                             <label for="expense-description" class="block text-sm font-medium text-[var(--text-muted-color)] mb-1">မှတ်ချက် (Optional)</label>
+                            <textarea id="expense-description" rows="2" placeholder="အသေးစိတ်အချက်အလက်" class="form-input w-full px-4 py-2 rounded-lg focus:ring-2"></textarea>
+                        </div>
+                        <div class="md:col-span-3">
+                            <button type="submit" id="add-expense-btn" class="btn btn-primary-solid w-full text-white font-bold py-2 px-4 sm:py-3 rounded-lg flex items-center justify-center gap-2">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>အသုံးစရိတ်ထည့်မည်</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Expenses List -->
+                <div class="p-1">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-6">အသုံးစရိတ်စာရင်း</h2>
+                    <div id="expenses-list-container" class="space-y-4">
+                        <!-- Expense items will be inserted here -->
+                    </div>
+                    <div id="no-expenses-message" class="text-center py-16 text-[var(--text-muted-color)] card rounded-2xl hidden">
+                        <i class="fas fa-receipt text-5xl mb-4"></i>
+                        <p class="text-lg font-semibold">အသုံးစရိတ်စာရင်းမရှိသေးပါ</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis View Content -->
+            <div id="analysis-view" class="hidden fade-in">
+                <div id="analysis-pro-lock" class="hidden text-center py-16 text-[var(--text-muted-color)] card rounded-2xl">
+                    <i class="fas fa-lock text-5xl mb-4 text-yellow-500"></i>
+                    <p class="text-lg font-semibold">Pro Feature</p>
+                    <p class="text-sm mt-2 max-w-md mx-auto">အသေးစိတ် သုံးသပ်ချက်များနှင့် Chart များကို ကြည့်ရှုရန် Pro Plan သို့ Upgrade လုပ်ရန်လိုအပ်ပါသည်။</p>
+                    <button id="upgrade-from-analysis-btn" class="btn btn-primary-solid text-white font-bold py-2 px-6 rounded-lg mt-6">Pro Plan သို့ Upgrade လုပ်ရန်</button>
+                </div>
+                <div id="analysis-content">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-8">
+                        <div class="card p-4 sm:p-6 rounded-2xl fade-in relative overflow-hidden">
+                            <i class="fa-solid fa-money-bill-wave absolute -right-4 -top-4 text-7xl sm:text-8xl text-red-500/10"></i>
+                            <h3 class="text-[var(--text-muted-color)] font-semibold mb-2 uppercase text-xs sm:text-sm tracking-wider">စုစုပေါင်းအသုံးစရိတ်</h3>
+                            <p id="total-expenses" class="text-xl sm:text-3xl font-bold text-red-500">0 MMK</p>
+                        </div>
+                        <div class="card p-4 sm:p-6 rounded-2xl fade-in relative overflow-hidden" style="animation-delay: 100ms;">
+                            <i class="fa-solid fa-piggy-bank absolute -right-4 -top-4 text-7xl sm:text-8xl text-green-500/10"></i>
+                            <h3 class="text-[var(--text-muted-color)] font-semibold mb-2 uppercase text-xs sm:text-sm tracking-wider">အသားတင်အမြတ်</h3>
+                            <p id="net-profit" class="text-xl sm:text-3xl font-bold text-green-500">0 MMK</p>
+                        </div>
+                        <div class="card p-4 sm:p-6 rounded-2xl fade-in relative overflow-hidden" style="animation-delay: 200ms;">
+                            <i class="fas fa-users absolute -right-4 -top-4 text-7xl sm:text-8xl text-blue-500/10"></i>
+                            <h3 class="text-[var(--text-muted-color)] font-semibold mb-2 uppercase text-xs sm:text-sm tracking-wider">စုစုပေါင်းဝယ်သူ</h3>
+                            <p id="total-customers" class="text-xl sm:text-3xl font-bold text-blue-500">0</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Sales Trend Chart -->
+                        <div class="card p-4 sm:p-6 rounded-2xl">
+                            <h3 class="text-lg font-bold mb-4">ရောင်းအားပြဇယား (ပြီးခဲ့သည့် ရက် ၃၀)</h3>
+                            <div class="h-80">
+                                <canvas id="salesTrendChart"></canvas>
+                            </div>
+                        </div>
+                        <!-- Top Selling Products Chart -->
+                        <div class="card p-4 sm:p-6 rounded-2xl">
+                            <h3 class="text-lg font-bold mb-4">အရောင်းရဆုံး Product များ</h3>
+                            <div class="h-80">
+                                <canvas id="productSalesChart"></canvas>
+                            </div>
+                        </div>
+                        <!-- Monthly Profit Chart -->
+                        <div class="card p-4 sm:p-6 rounded-2xl">
+                            <h3 class="text-lg font-bold mb-4">လအလိုက် အမြတ်အစွန်း</h3>
+                            <div class="h-80">
+                                 <canvas id="monthlyProfitChart"></canvas>
+                            </div>
+                        </div>
+                        <!-- Expense Category Chart -->
+                        <div class="card p-4 sm:p-6 rounded-2xl">
+                            <h3 class="text-lg font-bold mb-4">အသုံးစရိတ်အမျိုးအစားများ</h3>
+                            <div class="h-80 flex items-center justify-center">
+                                <canvas id="expenseCategoryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                     <div id="no-analysis-data" class="text-center py-16 text-[var(--text-muted-color)] card rounded-2xl hidden mt-8">
+                        <i class="fas fa-chart-pie text-5xl mb-4"></i>
+                        <p class="text-lg font-semibold">သုံးသပ်ချက်ပြသရန် Data မလုံလောက်ပါ</p>
+                        <p class="text-sm mt-2">အရောင်းစာရင်းများထည့်သွင်းပြီးနောက် ဤနေရာတွင် Chart များ ပေါ်လာပါမည်</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Staff View Content -->
+            <div id="staff-view" class="hidden fade-in">
+                <div class="text-center py-16 text-[var(--text-muted-color)] card rounded-2xl">
+                    <i class="fas fa-users-cog text-5xl mb-4"></i>
+                    <p class="text-lg font-semibold">ဝန်ထမ်းများ စီမံခန့်ခွဲရန်</p>
+                    <p class="text-sm mt-2 max-w-md mx-auto">ဤနေရာတွင် သင်၏ ဝန်ထမ်းအကောင့်များကို ထည့်သွင်းခြင်း၊ ပြင်ဆင်ခြင်းနှင့် ဖယ်ရှားခြင်းများ ပြုလုပ်နိုင်ပါမည်။</p>
+                    <button class="btn btn-primary-solid text-white font-bold py-2 px-6 rounded-lg mt-6">ဝန်ထမ်းအသစ်ထည့်ရန်</button>
+                </div>
+            </div>
+
+            <!-- Goals & Reports View Content -->
+            <div id="goals-view" class="hidden fade-in">
+                <!-- Monthly Sales Goal -->
+                <div class="card p-4 sm:p-6 md:p-8 rounded-2xl mb-8">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-2">လစဉ်ရောင်းအား ရည်မှန်းချက်</h2>
+                    <p class="text-sm text-[var(--text-muted-color)] mb-6">ယခုလအတွက် သင်၏ ရောင်းအားရည်မှန်းချက်ကို သတ်မှတ်ပါ။</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <input type="number" id="sales-target-input" placeholder="ဥပမာ: 500000" class="form-input w-full px-4 py-2 rounded-lg focus:ring-2 md:col-span-2">
+                        <button id="save-target-btn" class="btn btn-primary-solid w-full text-white font-bold py-2 px-4 rounded-lg">ရည်မှန်းချက်သတ်မှတ်မည်</button>
+                    </div>
+                    <div id="target-progress-container" class="mt-8">
+                        <!-- Progress bar will be rendered here by JS -->
+                    </div>
+                </div>
+                
+                <!-- Reports -->
+                <div class="card p-4 sm:p-6 md:p-8 rounded-2xl">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-2">အစီရင်ခံစာများ</h2>
+                    <p class="text-sm text-[var(--text-muted-color)] mb-6">သင်၏ လုပ်ငန်းဆောင်ရွက်မှု အကျဉ်းချုပ်ကို PDF report အဖြစ် download လုပ်ပါ။</p>
+                    
+                    <div class="pro-feature mb-6">
+                        <label for="logo-upload" class="block text-sm font-medium text-[var(--text-muted-color)] mb-2">PDF Report အတွက် Logo ထည့်ရန် (Pro Only)</label>
+                        <div class="flex items-center gap-4">
+                            <input type="file" id="logo-upload" accept="image/png, image/jpeg" class="form-input w-full text-sm">
+                            <img id="logo-preview" src="" alt="Logo Preview" class="w-12 h-12 rounded-md object-contain hidden bg-slate-100 dark:bg-slate-800 p-1">
+                        </div>
+                    </div>
+
+                    <button id="download-pdf-btn" class="btn bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 flex items-center justify-center gap-2">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>ယခုလ Report ကို Download လုပ်ရန်</span>
+                    </button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+    
+    <!-- Edit Sale Modal -->
+    <div id="edit-modal" class="modal fixed inset-0 bg-black bg-opacity-50 h-full w-full hidden z-50 flex items-center justify-center p-4">
+        <div class="w-full max-w-lg p-4 sm:p-5 shadow-lg rounded-2xl card border-[var(--border-color)]">
+            <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-3 mb-4">
+                 <h3 class="text-xl font-bold">အရောင်းစာရင်းပြင်ဆင်ရန်</h3>
+                 <button id="close-modal-btn" class="text-[var(--text-muted-color)] hover:text-[var(--text-color)] text-2xl">&times;</button>
+            </div>
+            <form id="edit-sale-form" class="space-y-4">
+                <input type="hidden" id="edit-sale-id">
+                <div>
+                    <label for="edit-sale-date" class="block text-sm font-medium text-[var(--text-muted-color)]">ရက်စွဲ</label>
+                    <input type="date" id="edit-sale-date" class="mt-1 w-full form-input px-4 py-2 rounded-lg focus:ring-2" required>
+                </div>
+                 <div>
+                    <label for="edit-product-name" class="block text-sm font-medium text-[var(--text-muted-color)]">Product</label>
+                    <input type="text" id="edit-product-name" class="mt-1 w-full form-input px-4 py-2 rounded-lg focus:ring-2" required>
+                </div>
+                <div>
+                    <label for="edit-vpn-plan" class="block text-sm font-medium text-[var(--text-muted-color)]">Plan</label>
+                    <input type="text" id="edit-vpn-plan" class="mt-1 w-full form-input px-4 py-2 rounded-lg focus:ring-2" required>
+                </div>
+                <div>
+                    <label for="edit-quantity" class="block text-sm font-medium text-[var(--text-muted-color)]">အရေအတွက်</label>
+                    <input type="number" id="edit-quantity" min="1" class="mt-1 w-full form-input px-4 py-2 rounded-lg focus:ring-2" required>
+                </div>
+                <div>
+                    <label for="edit-price" class="block text-sm font-medium text-[var(--text-muted-color)]">ရောင်းဈေး (တစ်ခု)</label>
+                    <input type="number" id="edit-price" min="0" class="mt-1 w-full form-input px-4 py-2 rounded-lg focus:ring-2" required>
+                </div>
+                 <div>
+                    <label for="edit-cost" class="block text-sm font-medium text-[var(--text-muted-color)]">ကုန်ကျငွေ (တစ်ခု)</label>
+                    <input type="number" id="edit-cost" min="0" class="mt-1 w-full form-input px-4 py-2 rounded-lg focus:ring-2" required>
+                </div>
+                <div class="pt-4 flex justify-end gap-3">
+                    <button type="button" id="cancel-edit-btn" class="bg-gray-200 dark:bg-gray-600 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">မလုပ်တော့ပါ</button>
+                    <button type="submit" id="save-edit-btn" class="btn bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 flex items-center justify-center">
+                        <span>သိမ်းဆည်းမည်</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile Settings Modal -->
+    <div id="profile-modal" class="modal fixed inset-0 bg-black bg-opacity-50 h-full w-full hidden z-50 flex items-start sm:items-center justify-center p-4">
+        <div class="w-full max-w-lg p-4 sm:p-5 shadow-lg rounded-2xl card border-[var(--border-color)] max-h-[90vh] overflow-y-auto my-8 sm:my-0">
+            <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-3 mb-4">
+                 <h3 class="text-xl font-bold">Profile Settings</h3>
+                 <button id="close-profile-modal-btn" class="text-[var(--text-muted-color)] hover:text-[var(--text-color)] text-2xl">&times;</button>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-semibold text-lg">Your User ID</h4>
+                <p class="text-sm text-[var(--text-muted-color)] mt-1 mb-2">This is your unique ID. You might need it for support or future collaborative features.</p>
+                <div class="flex items-center gap-2 p-2 rounded-lg bg-[var(--bg-color)]">
+                    <input type="text" id="user-id-display" readonly class="flex-grow bg-transparent text-sm text-[var(--text-muted-color)] outline-none">
+                    <button id="copy-user-id-btn" class="btn text-sm py-1 px-3 bg-[var(--card-bg-color)] hover:bg-gray-200 dark:hover:bg-gray-600">
+                        <i class="fas fa-copy mr-1"></i> Copy
+                    </button>
+                </div>
+            </div>
+
+            <div class="border-t border-[var(--border-color)] my-6"></div>
+
+            <!-- Change Password Form -->
+            <form id="change-password-form" class="space-y-4">
+                <h4 class="font-semibold text-lg">Change Password</h4>
+                <div>
+                    <label for="current-password" class="block text-sm font-medium text-[var(--text-muted-color)]">Current Password</label>
+                    <input type="password" id="current-password" class="mt-1 w-full form-input px-4 py-2 rounded-lg focus:ring-2" required>
+                </div>
+                <div>
+                    <label for="new-password" class="block text-sm font-medium text-[var(--text-muted-color)]">New Password</label>
+                    <input type="password" id="new-password" class="mt-1 w-full form-input px-4 py-2 rounded-lg focus:ring-2" required>
+                </div>
+                <div class="pt-2 flex justify-end">
+                    <button type="submit" id="save-password-btn" class="btn btn-primary-solid text-white font-bold py-2 px-4 rounded-lg">
+                        <span class="btn-text">Update Password</span>
+                        <i class="fas fa-spinner spinner hidden ml-2"></i>
+                    </button>
+                </div>
+            </form>
+            
+            <!-- Danger Zone: Delete Account -->
+            <div class="border-t border-red-500/30 my-6 pt-6">
+                <h4 class="font-semibold text-lg text-red-500">Danger Zone</h4>
+                <p class="text-sm text-[var(--text-muted-color)] mt-1">This action is irreversible. All your sales data will be permanently deleted.</p>
+                <form id="delete-account-form" class="space-y-4 mt-4">
+                     <div>
+                        <label for="delete-password" class="block text-sm font-medium text-[var(--text-muted-color)]">Enter Your Password to Confirm</label>
+                        <input type="password" id="delete-password" class="mt-1 w-full form-input px-4 py-2 rounded-lg focus:ring-2" required>
+                    </div>
+                    <div class="pt-2 flex justify-end">
+                        <button type="submit" id="delete-account-btn" class="btn bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700">
+                            <span class="btn-text">Delete My Account</span>
+                            <i class="fas fa-spinner spinner hidden ml-2"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Customer Detail/Edit Modal -->
+    <div id="customer-modal" class="modal fixed inset-0 bg-black bg-opacity-50 h-full w-full hidden z-50 flex items-start sm:items-center justify-center p-4">
+        <div class="w-full max-w-2xl p-4 sm:p-5 shadow-lg rounded-2xl card border-[var(--border-color)] max-h-[90vh] overflow-y-auto my-8 sm:my-0">
+            <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-3 mb-4">
+                 <h3 class="text-xl font-bold">ဝယ်သူအချက်အလက်</h3>
+                 <button id="close-customer-modal-btn" class="text-[var(--text-muted-color)] hover:text-[var(--text-color)] text-2xl">&times;</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Left side: Edit Form -->
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">ပြင်ဆင်ရန်</h4>
+                    <form id="edit-customer-form" class="space-y-4">
+                        <input type="hidden" id="edit-customer-id">
+                        <div>
+                            <label for="edit-customer-name" class="block text-sm font-medium text-[var(--text-muted-color)]">အမည်</label>
+                            <input type="text" id="edit-customer-name" class="mt-1 w-full form-input px-4 py-2 rounded-lg focus:ring-2" required>
+                        </div>
+                        <div>
+                            <label for="edit-customer-phone" class="block text-sm font-medium text-[var(--text-muted-color)]">ဖုန်းနံပါတ်</label>
+                            <input type="text" id="edit-customer-phone" class="mt-1 w-full form-input px-4 py-2 rounded-lg focus:ring-2">
+                        </div>
+                        <div class="pt-2 flex justify-end gap-3">
+                            <button type="button" id="delete-customer-btn" class="btn bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700">Delete</button>
+                            <button type="submit" id="save-customer-btn" class="btn bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700">Save</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Right side: Purchase History -->
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">ဝယ်ယူမှုမှတ်တမ်း</h4>
+                    <div id="customer-purchase-history" class="space-y-3 max-h-80 overflow-y-auto pr-2">
+                        <!-- Purchase history will be injected here -->
+                    </div>
+                    <div id="no-purchase-history" class="text-center py-10 text-[var(--text-muted-color)] hidden">
+                        <i class="fas fa-receipt text-4xl mb-3"></i>
+                        <p>ဝယ်ယူမှုမှတ်တမ်းမရှိသေးပါ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Expense Modal -->
+    <div id="edit-expense-modal" class="modal fixed inset-0 bg-black bg-opacity-50 h-full w-full hidden z-50 flex items-center justify-center p-4">
+        <div class="w-full max-w-lg p-4 sm:p-5 shadow-lg rounded-2xl card border-[var(--border-color)]">
+            <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-3 mb-4">
+                 <h3 class="text-xl font-bold">အသုံးစရိတ်ပြင်ဆင်ရန်</h3>
+                 <button id="close-edit-expense-modal-btn" class="text-[var(--text-muted-color)] hover:text-[var(--text-color)] text-2xl">&times;</button>
+            </div>
+            <form id="edit-expense-form" class="space-y-4">
+                <input type="hidden" id="edit-expense-id">
+                <div>
+                    <label for="edit-expense-date" class="block text-sm font-medium text-[var(--text-muted-color)]">ရက်စွဲ</label>
+                    <input type="date" id="edit-expense-date" class="mt-1 w-full form-input px-4 py-2 rounded-lg focus:ring-2" required>
+                </div>
+                <div>
+                    <label for="edit-expense-category" class="block text-sm font-medium text-[var(--text-muted-color)]">အမျိုးအစား</label>
+                    <input type="text" id="edit-expense-category" class="mt-1 w-full form-input px-4 py-2 rounded-lg focus:ring-2" required>
+                </div>
+                <div>
+                    <label for="edit-expense-amount" class="block text-sm font-medium text-[var(--text-muted-color)]">ပမာဏ</label>
+                    <input type="number" id="edit-expense-amount" min="0" class="mt-1 w-full form-input px-4 py-2 rounded-lg focus:ring-2" required>
+                </div>
+                <div>
+                    <label for="edit-expense-description" class="block text-sm font-medium text-[var(--text-muted-color)]">မှတ်ချက်</label>
+                    <textarea id="edit-expense-description" rows="2" class="mt-1 w-full form-input px-4 py-2 rounded-lg focus:ring-2"></textarea>
+                </div>
+                <div class="pt-4 flex justify-end gap-3">
+                    <button type="button" id="cancel-edit-expense-btn" class="bg-gray-200 dark:bg-gray-600 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">မလုပ်တော့ပါ</button>
+                    <button type="submit" id="save-edit-expense-btn" class="btn bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- About Modal -->
+    <div id="about-modal" class="modal fixed inset-0 bg-black bg-opacity-50 h-full w-full hidden z-50 flex items-center justify-center p-4">
+        <div class="w-full max-w-lg p-4 sm:p-6 shadow-lg rounded-2xl card border-[var(--border-color)]">
+            <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-3 mb-4">
+                 <h3 class="text-xl font-bold">About SalesDash</h3>
+                 <button id="close-about-modal-btn" class="text-[var(--text-muted-color)] hover:text-[var(--text-color)] text-2xl">&times;</button>
+            </div>
+            <div class="space-y-4 text-sm">
+                <p><span class="font-semibold">Version:</span> 3.3.0 (Integrated Subscription View)</p>
+                <h4 class="font-semibold text-lg mt-4">What's New in SalesDash</h4>
+                <ul class="list-disc list-inside space-y-2 text-[var(--text-muted-color)]">
+                    <li>Pricing page ကို ဖယ်ရှားပြီး "My Subscription" menu အောက်တွင် ပေါင်းစည်းထားပါသည်။</li>
+                    <li>Pro Plan သို့ အဆင့်မြှင့်တင်ခြင်းကို Admin မှ တိုက်ရိုက်ပြုလုပ်ပေးမည့် စနစ်သို့ပြောင်းလဲထားပါသည်။</li>
+                </ul>
+            </div>
+             <div class="pt-4 mt-4 flex justify-end">
+                <button type="button" id="about-modal-ok-btn" class="btn btn-primary-solid text-white font-bold py-2 px-6 rounded-lg">OK</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Confirmation Modal -->
+    <div id="confirm-modal" class="modal fixed inset-0 bg-black bg-opacity-50 h-full w-full hidden z-50 flex items-center justify-center p-4">
+        <div class="w-full max-w-md p-4 sm:p-6 shadow-lg rounded-2xl card border-[var(--border-color)] text-center">
+            <div class="mb-4">
+                <i class="fas fa-exclamation-triangle text-4xl text-yellow-500"></i>
+            </div>
+            <h3 id="confirm-title" class="text-lg font-semibold mb-2">Are you sure?</h3>
+            <p id="confirm-text" class="text-sm text-[var(--text-muted-color)] mb-6">You won't be able to revert this!</p>
+            <div class="flex justify-center gap-4">
+                <button id="confirm-cancel-btn" class="btn bg-gray-200 dark:bg-gray-600 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold py-2 px-6 rounded-lg">Cancel</button>
+                <button id="confirm-ok-btn" class="btn bg-red-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-700">Yes, do it!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Subscription Modal -->
+    <div id="subscription-modal" class="modal fixed inset-0 bg-black bg-opacity-50 h-full w-full hidden z-50 flex items-center justify-center p-4">
+        <div class="w-full max-w-lg p-5 sm:p-6 shadow-lg rounded-2xl card border-[var(--border-color)]">
+            <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-3 mb-4">
+                <h3 class="text-xl font-bold">My Subscription</h3>
+                <button id="close-subscription-modal-btn" class="text-[var(--text-muted-color)] hover:text-[var(--text-color)] text-2xl">&times;</button>
+            </div>
+            <div id="subscription-modal-content">
+                <!-- Content will be injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 w-80 rounded-lg shadow-lg hidden z-50">
+        <!-- Content will be injected by JS -->
+    </div>
+
+    <script>
+        window.firebaseConfig = {
+          apiKey: "AIzaSyDpPITUwHiRlxbC16gR7mBAhubEYtPhENQ",
+          authDomain: "sales-dashboard-1100a.firebaseapp.com",
+          projectId: "sales-dashboard-1100a",
+          storageBucket: "sales-dashboard-1100a.appspot.com", // Corrected storage bucket URL
+          messagingSenderId: "885128519230",
+          appId: "1:885128519230:web:a626fd839f6523fab6bb6f"
+        };
+    </script>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithCustomToken, updatePassword, EmailAuthProvider, reauthenticateWithCredential, deleteUser } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, doc, deleteDoc, updateDoc, serverTimestamp, enableIndexedDbPersistence, getDocs, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Firebase Initialization ---
+            let app, auth, db, storage;
+            let firebaseConfig;
+
+            if (window.firebaseConfig && window.firebaseConfig.apiKey) {
+                firebaseConfig = window.firebaseConfig;
+            } else if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                firebaseConfig = JSON.parse(__firebase_config);
+            } else {
+                console.error("Firebase configuration is missing.");
+                document.body.innerHTML = `<div class="min-h-screen flex items-center justify-center bg-red-100 text-red-700 p-4 text-center"><strong>Application Error:</strong> Firebase configuration is missing. Please add your Firebase project configuration to the HTML file.</div>`;
+                return;
+            }
+
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                storage = getStorage(app);
+            } catch (error) {
+                console.error("Firebase initialization failed:", error);
+                document.body.innerHTML = `<div class="min-h-screen flex items-center justify-center bg-red-100 text-red-700 p-4 text-center"><strong>Application Error:</strong> Could not initialize Firebase. Check if your configuration is correct.</div>`;
+                return;
+            }
+            
+            // --- Application State ---
+            const state = {
+                allSales: [],
+                allCustomers: [],
+                allExpenses: [],
+                filteredSales: [],
+                filteredCustomers: [],
+                unsubscribeAll: () => {},
+                confirmCallback: null,
+                currentPage: 1,
+                itemsPerPage: 9,
+                appId: typeof __app_id !== 'undefined' ? __app_id : 'default-app-id',
+                isAuthReady: false,
+                charts: {},
+                salesTarget: 0,
+                userPlan: null, // 'free', 'pro', or null if not set
+                logoBase64: null,
+            };
+
+            // --- DOM Element Cache ---
+            const DOM = {
+                initialLoader: document.getElementById('initial-loader'),
+                authSection: document.getElementById('auth-section'),
+                appSection: document.getElementById('app'),
+                loginForm: document.getElementById('login-form'),
+                emailInput: document.getElementById('email'),
+                passwordInput: document.getElementById('password'),
+                loginBtn: document.getElementById('login-btn'),
+                registerBtn: document.getElementById('register-btn'),
+                logoutBtn: document.getElementById('logout-btn'),
+                authError: document.getElementById('auth-error'),
+                userEmailDisplay: document.getElementById('user-email-display'),
+                dropdownUserEmail: document.getElementById('dropdown-user-email'),
+                addSaleForm: document.getElementById('add-sale-form'),
+                saleDateInput: document.getElementById('sale-date'),
+                productNameInput: document.getElementById('product-name'),
+                vpnPlanInput: document.getElementById('vpn-plan'),
+                quantityInput: document.getElementById('quantity'),
+                priceInput: document.getElementById('price'),
+                costInput: document.getElementById('cost'),
+                salesListContainer: document.getElementById('sales-list-container'),
+                todayTotalEl: document.getElementById('today-total'),
+                todayProfitEl: document.getElementById('today-profit'),
+                monthTotalEl: document.getElementById('month-total'),
+                monthProfitEl: document.getElementById('month-profit'),
+                noSalesMessage: document.getElementById('no-sales-message'),
+                filterStartDateInput: document.getElementById('filter-start-date'),
+                filterEndDateInput: document.getElementById('filter-end-date'),
+                searchInput: document.getElementById('search-input'),
+                clearFilterBtn: document.getElementById('clear-filter-btn'),
+                exportCsvBtn: document.getElementById('export-csv-btn'),
+                exportAllCsvBtn: document.getElementById('export-all-csv-btn'),
+                authThemeToggle: document.getElementById('auth-theme-toggle'),
+                appThemeToggle: document.getElementById('app-theme-toggle'),
+                editModal: document.getElementById('edit-modal'),
+                editSaleForm: document.getElementById('edit-sale-form'),
+                editSaleIdInput: document.getElementById('edit-sale-id'),
+                editSaleDateInput: document.getElementById('edit-sale-date'),
+                editProductNameInput: document.getElementById('edit-product-name'),
+                editVpnPlanInput: document.getElementById('edit-vpn-plan'),
+                editQuantityInput: document.getElementById('edit-quantity'),
+                editPriceInput: document.getElementById('edit-price'),
+                editCostInput: document.getElementById('edit-cost'),
+                cancelEditBtn: document.getElementById('cancel-edit-btn'),
+                closeModalBtn: document.getElementById('close-modal-btn'),
+                saveEditBtn: document.getElementById('save-edit-btn'),
+                addSaleBtn: document.getElementById('add-sale-btn'),
+                tabDaily: document.getElementById('tab-daily'),
+                tabMonthly: document.getElementById('tab-monthly'),
+                dailyView: document.getElementById('daily-view'),
+                monthlyView: document.getElementById('monthly-view'),
+                monthlySummaryTableContainer: document.getElementById('monthly-summary-table-container'),
+                noMonthlyDataMessage: document.getElementById('no-monthly-data-message'),
+                confirmModal: document.getElementById('confirm-modal'),
+                confirmTitle: document.getElementById('confirm-title'),
+                confirmText: document.getElementById('confirm-text'),
+                confirmCancelBtn: document.getElementById('confirm-cancel-btn'),
+                confirmOkBtn: document.getElementById('confirm-ok-btn'),
+                toastEl: document.getElementById('toast'),
+                productDatalist: document.getElementById('product-list'),
+                planDatalist: document.getElementById('plan-list'),
+                paginationControls: document.getElementById('pagination-controls'),
+                connectionStatusEl: document.getElementById('connection-status'),
+                profileModal: document.getElementById('profile-modal'),
+                closeProfileModalBtn: document.getElementById('close-profile-modal-btn'),
+                changePasswordForm: document.getElementById('change-password-form'),
+                currentPasswordInput: document.getElementById('current-password'),
+                newPasswordInput: document.getElementById('new-password'),
+                savePasswordBtn: document.getElementById('save-password-btn'),
+                deleteAccountForm: document.getElementById('delete-account-form'),
+                deletePasswordInput: document.getElementById('delete-password'),
+                deleteAccountBtn: document.getElementById('delete-account-btn'),
+                moreMenuBtn: document.getElementById('more-menu-btn'),
+                moreMenuDropdown: document.getElementById('more-menu-dropdown'),
+                menuProfileBtn: document.getElementById('menu-profile-btn'),
+                menuAboutBtn: document.getElementById('menu-about-btn'),
+                aboutModal: document.getElementById('about-modal'),
+                closeAboutModalBtn: document.getElementById('close-about-modal-btn'),
+                aboutModalOkBtn: document.getElementById('about-modal-ok-btn'),
+                userIdDisplay: document.getElementById('user-id-display'),
+                copyUserIdBtn: document.getElementById('copy-user-id-btn'),
+                planBadge: document.getElementById('plan-badge'),
+                menuSubscriptionBtn: document.getElementById('menu-subscription-btn'),
+                upgradeFromAnalysisBtn: document.getElementById('upgrade-from-analysis-btn'),
+                subscriptionModal: document.getElementById('subscription-modal'),
+                closeSubscriptionModalBtn: document.getElementById('close-subscription-modal-btn'),
+                subscriptionModalContent: document.getElementById('subscription-modal-content'),
+
+                // CRM Elements
+                tabCustomers: document.getElementById('tab-customers'),
+                customersView: document.getElementById('customers-view'),
+                addCustomerForm: document.getElementById('add-customer-form'),
+                customerNameInput: document.getElementById('customer-name'),
+                customerPhoneInput: document.getElementById('customer-phone'),
+                addCustomerBtn: document.getElementById('add-customer-btn'),
+                customersListContainer: document.getElementById('customers-list-container'),
+                noCustomersMessage: document.getElementById('no-customers-message'),
+                customerSearchInput: document.getElementById('customer-search-input'),
+                saleCustomerInput: document.getElementById('sale-customer'),
+                customerDatalist: document.getElementById('customer-list'),
+                customerModal: document.getElementById('customer-modal'),
+                closeCustomerModalBtn: document.getElementById('close-customer-modal-btn'),
+                editCustomerForm: document.getElementById('edit-customer-form'),
+                editCustomerId: document.getElementById('edit-customer-id'),
+                editCustomerName: document.getElementById('edit-customer-name'),
+                editCustomerPhone: document.getElementById('edit-customer-phone'),
+                deleteCustomerBtn: document.getElementById('delete-customer-btn'),
+                saveCustomerBtn: document.getElementById('save-customer-btn'),
+                customerPurchaseHistory: document.getElementById('customer-purchase-history'),
+                noPurchaseHistory: document.getElementById('no-purchase-history'),
+
+                // Analysis Elements
+                tabAnalysis: document.getElementById('tab-analysis'),
+                analysisView: document.getElementById('analysis-view'),
+                analysisContent: document.getElementById('analysis-content'),
+                analysisProLock: document.getElementById('analysis-pro-lock'),
+                noAnalysisData: document.getElementById('no-analysis-data'),
+                totalExpensesEl: document.getElementById('total-expenses'),
+                netProfitEl: document.getElementById('net-profit'),
+                totalCustomersEl: document.getElementById('total-customers'),
+
+                // Expense Elements
+                tabExpenses: document.getElementById('tab-expenses'),
+                expensesView: document.getElementById('expenses-view'),
+                addExpenseForm: document.getElementById('add-expense-form'),
+                expenseDateInput: document.getElementById('expense-date'),
+                expenseCategoryInput: document.getElementById('expense-category'),
+                expenseAmountInput: document.getElementById('expense-amount'),
+                expenseDescriptionInput: document.getElementById('expense-description'),
+                addExpenseBtn: document.getElementById('add-expense-btn'),
+                expensesListContainer: document.getElementById('expenses-list-container'),
+                noExpensesMessage: document.getElementById('no-expenses-message'),
+                editExpenseModal: document.getElementById('edit-expense-modal'),
+                closeEditExpenseModalBtn: document.getElementById('close-edit-expense-modal-btn'),
+                editExpenseForm: document.getElementById('edit-expense-form'),
+                editExpenseId: document.getElementById('edit-expense-id'),
+                editExpenseDate: document.getElementById('edit-expense-date'),
+                editExpenseCategory: document.getElementById('edit-expense-category'),
+                editExpenseAmount: document.getElementById('edit-expense-amount'),
+                editExpenseDescription: document.getElementById('edit-expense-description'),
+                cancelEditExpenseBtn: document.getElementById('cancel-edit-expense-btn'),
+                saveEditExpenseBtn: document.getElementById('save-edit-expense-btn'),
+
+                // Goals & Reports Elements
+                tabGoals: document.getElementById('tab-goals'),
+                goalsView: document.getElementById('goals-view'),
+                salesTargetInput: document.getElementById('sales-target-input'),
+                saveTargetBtn: document.getElementById('save-target-btn'),
+                targetProgressContainer: document.getElementById('target-progress-container'),
+                downloadPdfBtn: document.getElementById('download-pdf-btn'),
+                logoUpload: document.getElementById('logo-upload'),
+                logoPreview: document.getElementById('logo-preview'),
+
+                // Staff Elements
+                tabStaff: document.getElementById('tab-staff'),
+                staffView: document.getElementById('staff-view'),
+            };
+
+            // --- UI Module ---
+            const ui = {
+                formatCurrency: (amount) => `${Math.round(amount).toLocaleString()} MMK`,
+                
+                toggleButtonLoading: (button, isLoading) => {
+                    if (!button) return;
+                    const btnText = button.querySelector('.btn-text');
+                    const spinner = button.querySelector('.spinner');
+                    button.disabled = isLoading;
+                    if (isLoading) {
+                        if (btnText) btnText.style.display = 'none';
+                        if (spinner) spinner.classList.remove('hidden');
+                    } else {
+                        if (btnText) btnText.style.display = '';
+                        if (spinner) spinner.classList.add('hidden');
+                    }
+                },
+
+                showToast: (message, type = 'success') => {
+                    const bgColor = type === 'error' ? 'bg-red-500' : type === 'success' ? 'bg-green-500' : 'bg-[var(--toast-bg)]';
+                    const icon = type === 'error' ? 'fa-times-circle' : 'fa-check-circle';
+                    
+                    DOM.toastEl.innerHTML = `
+                        <div class="flex items-center p-4 ${bgColor} text-white rounded-lg shadow-lg">
+                            <i class="fas ${icon} mr-3 text-xl"></i>
+                            <div class="flex-1 text-sm font-medium">${message}</div>
+                        </div>
+                    `;
+                    DOM.toastEl.classList.remove('hidden', 'toast-out');
+                    DOM.toastEl.classList.add('toast-in');
+
+                    setTimeout(() => {
+                        DOM.toastEl.classList.remove('toast-in');
+                        DOM.toastEl.classList.add('toast-out');
+                    }, 4000);
+                },
+
+                updateConnectionStatus: (online) => {
+                    const el = DOM.connectionStatusEl;
+                    if (online) {
+                        el.classList.remove('bg-yellow-500', 'bg-gray-400');
+                        el.classList.add('bg-green-500');
+                        el.title = 'Online';
+                    } else {
+                        el.classList.remove('bg-green-500', 'bg-gray-400');
+                        el.classList.add('bg-yellow-500');
+                        el.title = 'Offline - Changes will sync when back online';
+                    }
+                },
+
+                applyTheme: (theme) => {
+                    document.documentElement.className = theme;
+                    DOM.authThemeToggle.checked = theme === 'dark';
+                    DOM.appThemeToggle.checked = theme === 'dark';
+                },
+
+                toggleTheme: () => {
+                    const newTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+                    localStorage.setItem('theme', newTheme);
+                    ui.applyTheme(newTheme);
+                    if (state.userPlan === 'pro') {
+                        ui.renderAnalysisCharts(); // Re-render charts with new theme colors
+                    }
+                },
+
+                openModal: (modal) => modal.classList.remove('hidden'),
+                closeModal: (modal) => modal.classList.add('hidden'),
+
+                showConfirmModal: (title, text, onConfirm) => {
+                    DOM.confirmTitle.textContent = title;
+                    DOM.confirmText.textContent = text;
+                    state.confirmCallback = onConfirm;
+                    ui.openModal(DOM.confirmModal);
+                },
+
+                updateFeaturesForPlan: () => {
+                    const isPro = state.userPlan === 'pro';
+                    
+                    document.querySelectorAll('.pro-feature').forEach(el => {
+                        el.style.display = isPro ? '' : 'none';
+                    });
+
+                    if (isPro) {
+                        DOM.planBadge.textContent = 'PRO';
+                        DOM.planBadge.className = 'px-3 py-1 text-xs font-bold text-white rounded-full bg-gradient-to-r from-purple-500 to-indigo-600';
+                    } else {
+                        DOM.planBadge.textContent = 'FREE';
+                        DOM.planBadge.className = 'px-3 py-1 text-xs font-bold text-gray-600 bg-gray-200 rounded-full';
+                    }
+                    DOM.planBadge.style.display = 'inline-block';
+
+                    if (isPro) {
+                        DOM.analysisProLock.classList.add('hidden');
+                        DOM.analysisContent.classList.remove('hidden');
+                        DOM.tabAnalysis.classList.remove('disabled');
+                        ui.renderAnalysisCharts();
+                    } else {
+                        DOM.analysisProLock.classList.remove('hidden');
+                        DOM.analysisContent.classList.add('hidden');
+                        DOM.tabAnalysis.classList.add('disabled');
+                    }
+                },
+
+                updateDashboard: () => {
+                    ui.applyFiltersAndRender();
+                    ui.updateSummaryCards();
+                    ui.updateMonthlySummary();
+                    ui.updateDatalists();
+                    ui.renderCustomersList();
+                    ui.renderExpensesList();
+                    ui.renderSalesTargetProgress();
+                    if(state.userPlan === 'pro') {
+                        ui.renderAnalysisCharts();
+                    }
+                },
+
+                applyFiltersAndRender: () => {
+                    const startDate = DOM.filterStartDateInput.value;
+                    const endDate = DOM.filterEndDateInput.value;
+                    const searchTerm = DOM.searchInput.value.toLowerCase();
+
+                    state.filteredSales = state.allSales.filter(sale => {
+                        const saleDate = new Date(sale.date);
+                        const start = startDate ? new Date(startDate) : null;
+                        const end = endDate ? new Date(endDate) : null;
+                        
+                        if (start && saleDate < start) return false;
+                        if (end && saleDate > end) return false;
+
+                        return searchTerm === '' ||
+                            sale.product.toLowerCase().includes(searchTerm) ||
+                            sale.plan.toLowerCase().includes(searchTerm) ||
+                            (sale.customerName && sale.customerName.toLowerCase().includes(searchTerm));
+                    });
+                    
+                    state.currentPage = 1;
+                    ui.renderPaginatedSales();
+                    ui.renderPaginationControls();
+                },
+
+                updateSummaryCards: () => {
+                    let todayTotal = 0, todayProfit = 0, monthTotal = 0, monthProfit = 0;
+                    const today = new Date();
+                    const todayString = today.toISOString().split('T')[0];
+                    const currentMonthString = today.toISOString().slice(0, 7);
+
+                    state.allSales.forEach(sale => {
+                        const total = sale.quantity * sale.price;
+                        const profit = (sale.price - (sale.cost || 0)) * sale.quantity;
+                        
+                        if (sale.date === todayString) {
+                            todayTotal += total;
+                            todayProfit += profit;
+                        }
+                        if (sale.date && sale.date.startsWith(currentMonthString)) {
+                            monthTotal += total;
+                            monthProfit += profit;
+                        }
+                    });
+                    
+                    DOM.todayTotalEl.textContent = ui.formatCurrency(todayTotal);
+                    DOM.todayProfitEl.textContent = ui.formatCurrency(todayProfit);
+                    DOM.monthTotalEl.textContent = ui.formatCurrency(monthTotal);
+                    DOM.monthProfitEl.textContent = ui.formatCurrency(monthProfit);
+
+                    const totalExpenses = state.allExpenses.reduce((sum, exp) => sum + exp.amount, 0);
+                    const grossProfit = state.allSales.reduce((sum, sale) => sum + (sale.price - sale.cost) * sale.quantity, 0);
+                    const netProfit = grossProfit - totalExpenses;
+                    DOM.totalExpensesEl.textContent = ui.formatCurrency(totalExpenses);
+                    DOM.netProfitEl.textContent = ui.formatCurrency(netProfit);
+                    DOM.totalCustomersEl.textContent = state.allCustomers.length;
+                },
+
+                renderPaginatedSales: () => {
+                    const startIndex = (state.currentPage - 1) * state.itemsPerPage;
+                    const endIndex = startIndex + state.itemsPerPage;
+                    const salesToRender = state.filteredSales.slice(startIndex, endIndex);
+
+                    DOM.salesListContainer.innerHTML = '';
+                    DOM.noSalesMessage.classList.toggle('hidden', state.filteredSales.length > 0);
+
+                    salesToRender.forEach((sale, index) => {
+                        const profit = (sale.price - (sale.cost || 0)) * sale.quantity;
+                        const card = document.createElement('div');
+                        card.className = 'card rounded-xl p-4 sm:p-5 flex flex-col space-y-4 fade-in';
+                        card.style.animationDelay = `${index * 50}ms`;
+                        
+                        const customerHTML = sale.customerName 
+                            ? `<div class="flex items-center gap-2 text-sm text-indigo-500 dark:text-indigo-400">
+                                <i class="fas fa-user"></i>
+                                <span>${sale.customerName}</span>
+                               </div>`
+                            : '';
+
+                        card.innerHTML = `
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="font-bold text-base sm:text-lg">${sale.product}</p>
+                                    <p class="text-sm text-[var(--text-muted-color)]">${sale.plan}</p>
+                                </div>
+                                <div class="text-right flex-shrink-0">
+                                    <p class="text-xs text-[var(--text-muted-color)]">${sale.date}</p>
+                                    <div class="mt-2">
+                                        <button data-id="${sale.id}" class="edit-btn text-indigo-400 hover:text-indigo-600 w-8 h-8 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-900/50"><i class="fas fa-pencil-alt"></i></button>
+                                        <button data-id="${sale.id}" class="delete-btn text-red-400 hover:text-red-600 w-8 h-8 rounded-full hover:bg-red-100 dark:hover:bg-red-900/50"><i class="fas fa-trash-alt"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            ${customerHTML}
+                            <div class="border-t border-[var(--border-color)] my-2"></div>
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-xs sm:text-sm">
+                                <span class="text-[var(--text-muted-color)]">အရေအတွက်:</span>
+                                <span class="font-medium text-right">${sale.quantity}</span>
+                                <span class="text-[var(--text-muted-color)]">ရောင်းဈေး:</span>
+                                <span class="font-medium text-right">${ui.formatCurrency(sale.price)}</span>
+                                <span class="text-[var(--text-muted-color)]">ကုန်ကျငွေ:</span>
+                                <span class="font-medium text-right">${ui.formatCurrency(sale.cost || 0)}</span>
+                            </div>
+                            <div class="border-t border-[var(--border-color)] my-2"></div>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="font-semibold text-sm sm:text-base">အမြတ်:</span>
+                                <span class="font-bold text-base sm:text-lg ${profit >= 0 ? 'text-green-500' : 'text-red-500'}">${ui.formatCurrency(profit)}</span>
+                            </div>
+                        `;
+                        DOM.salesListContainer.appendChild(card);
+                    });
+                },
+
+                renderPaginationControls: () => {
+                    DOM.paginationControls.innerHTML = '';
+                    const pageCount = Math.ceil(state.filteredSales.length / state.itemsPerPage);
+                    if (pageCount <= 1) return;
+
+                    for (let i = 1; i <= pageCount; i++) {
+                        const button = document.createElement('button');
+                        button.textContent = i;
+                        button.className = `pagination-btn btn rounded-lg p-2 ${i === state.currentPage ? 'active' : 'bg-[var(--card-bg-color)]'}`;
+                        button.addEventListener('click', () => {
+                            state.currentPage = i;
+                            ui.renderPaginatedSales();
+                            ui.renderPaginationControls();
+                        });
+                        DOM.paginationControls.appendChild(button);
+                    }
+                },
+
+                updateMonthlySummary: () => {
+                    const monthlyData = {};
+                    state.allSales.forEach(sale => {
+                        const month = sale.date.substring(0, 7);
+                        if (!monthlyData[month]) {
+                            monthlyData[month] = { total: 0, profit: 0 };
+                        }
+                        monthlyData[month].total += sale.price * sale.quantity;
+                        monthlyData[month].profit += (sale.price - sale.cost) * sale.quantity;
+                    });
+                    const summaryData = Object.entries(monthlyData)
+                                .map(([month, data]) => ({ month, ...data }))
+                                .sort((a, b) => b.month.localeCompare(a.month));
+
+                    const hasData = summaryData.length > 0;
+                    DOM.monthlyView.querySelector('.w-full').classList.toggle('hidden', !hasData);
+                    DOM.noMonthlyDataMessage.classList.toggle('hidden', hasData);
+
+                    let tableHTML = `
+                        <table class="w-full text-sm text-left">
+                            <thead class="text-xs text-[var(--text-muted-color)] uppercase bg-[var(--bg-color)]">
+                                <tr>
+                                    <th scope="col" class="px-4 sm:px-6 py-3">လ</th>
+                                    <th scope="col" class="px-4 sm:px-6 py-3 text-right">ရောင်းရငွေ</th>
+                                    <th scope="col" class="px-4 sm:px-6 py-3 text-right">အမြတ်</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+                    summaryData.forEach(item => {
+                        tableHTML += `
+                            <tr class="border-b border-[var(--border-color)]">
+                                <th scope="row" class="px-4 sm:px-6 py-4 font-medium whitespace-nowrap">${item.month}</th>
+                                <td class="px-4 sm:px-6 py-4 text-right">${ui.formatCurrency(item.total)}</td>
+                                <td class="px-4 sm:px-6 py-4 text-right font-bold ${item.profit >= 0 ? 'text-green-500' : 'text-red-500'}">${ui.formatCurrency(item.profit)}</td>
+                            </tr>
+                        `;
+                    });
+                    tableHTML += `</tbody></table>`;
+                    DOM.monthlySummaryTableContainer.innerHTML = tableHTML;
+                },
+
+                updateDatalists: () => {
+                    const products = [...new Set(state.allSales.map(s => s.product))];
+                    const plans = [...new Set(state.allSales.map(s => s.plan))];
+                    DOM.productDatalist.innerHTML = products.map(p => `<option value="${p}"></option>`).join('');
+                    DOM.planDatalist.innerHTML = plans.map(p => `<option value="${p}"></option>`).join('');
+                    
+                    const customers = state.allCustomers.map(c => c.name);
+                    DOM.customerDatalist.innerHTML = customers.map(c => `<option value="${c}"></option>`).join('');
+                },
+                
+                renderCustomersList: () => {
+                    const searchTerm = DOM.customerSearchInput.value.toLowerCase();
+                    state.filteredCustomers = state.allCustomers.filter(customer => {
+                        return customer.name.toLowerCase().includes(searchTerm) || 
+                               (customer.phone && customer.phone.toLowerCase().includes(searchTerm));
+                    });
+
+                    DOM.customersListContainer.innerHTML = '';
+                    DOM.noCustomersMessage.classList.toggle('hidden', state.filteredCustomers.length > 0);
+
+                    state.filteredCustomers.forEach(customer => {
+                        const card = document.createElement('div');
+                        card.className = 'card rounded-xl p-4 flex items-center justify-between hover:shadow-lg cursor-pointer';
+                        card.dataset.id = customer.id;
+
+                        card.innerHTML = `
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
+                                    <i class="fas fa-user text-xl text-indigo-500"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold">${customer.name}</p>
+                                    <p class="text-sm text-[var(--text-muted-color)]">${customer.phone || 'No phone'}</p>
+                                </div>
+                            </div>
+                            <i class="fas fa-chevron-right text-[var(--text-muted-color)]"></i>
+                        `;
+                        DOM.customersListContainer.appendChild(card);
+                    });
+                },
+
+                renderCustomerModal: (customer) => {
+                    DOM.editCustomerId.value = customer.id;
+                    DOM.editCustomerName.value = customer.name;
+                    DOM.editCustomerPhone.value = customer.phone || '';
+
+                    const purchaseHistory = state.allSales.filter(sale => sale.customerId === customer.id);
+                    DOM.noPurchaseHistory.classList.toggle('hidden', purchaseHistory.length > 0);
+                    DOM.customerPurchaseHistory.innerHTML = '';
+
+                    if (purchaseHistory.length > 0) {
+                        purchaseHistory.forEach(sale => {
+                            const saleEl = document.createElement('div');
+                            saleEl.className = 'p-3 rounded-lg bg-[var(--bg-color)] text-sm';
+                            saleEl.innerHTML = `
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold">${sale.product} - ${sale.plan}</span>
+                                    <span class="font-bold text-green-500">${ui.formatCurrency(sale.price * sale.quantity)}</span>
+                                </div>
+                                <div class="text-xs text-[var(--text-muted-color)] mt-1">${sale.date}</div>
+                            `;
+                            DOM.customerPurchaseHistory.appendChild(saleEl);
+                        });
+                    }
+                    ui.openModal(DOM.customerModal);
+                },
+
+                renderExpensesList: () => {
+                    DOM.expensesListContainer.innerHTML = '';
+                    DOM.noExpensesMessage.classList.toggle('hidden', state.allExpenses.length > 0);
+
+                    state.allExpenses.forEach(expense => {
+                        const item = document.createElement('div');
+                        item.className = 'card rounded-xl p-4 flex items-center justify-between';
+                        item.innerHTML = `
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/50 flex items-center justify-center">
+                                    <i class="fas fa-wallet text-xl text-red-500"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold">${expense.category}</p>
+                                    <p class="text-sm text-[var(--text-muted-color)]">${expense.description || expense.date}</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold text-red-500">${ui.formatCurrency(expense.amount)}</p>
+                                <div class="mt-1">
+                                    <button data-id="${expense.id}" class="edit-expense-btn text-indigo-400 hover:text-indigo-600 w-8 h-8 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-900/50"><i class="fas fa-pencil-alt"></i></button>
+                                    <button data-id="${expense.id}" class="delete-expense-btn text-red-400 hover:text-red-600 w-8 h-8 rounded-full hover:bg-red-100 dark:hover:bg-red-900/50"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        `;
+                        DOM.expensesListContainer.appendChild(item);
+                    });
+                },
+
+                renderAnalysisCharts: () => {
+                    if (state.allSales.length === 0 && state.allExpenses.length === 0) {
+                        DOM.analysisView.querySelector('.grid').classList.add('hidden');
+                        DOM.noAnalysisData.classList.remove('hidden');
+                        return;
+                    }
+                    DOM.analysisView.querySelector('.grid').classList.remove('hidden');
+                    DOM.noAnalysisData.classList.add('hidden');
+
+                    const isDark = document.documentElement.classList.contains('dark');
+                    const textColor = isDark ? '#e2e8f0' : '#1a202c';
+                    const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+
+                    // Sales Trend Chart
+                    const salesTrendCtx = document.getElementById('salesTrendChart').getContext('2d');
+                    const salesTrendData = analysis.prepareSalesTrendData(30);
+                    if (state.charts.salesTrend) state.charts.salesTrend.destroy();
+                    state.charts.salesTrend = new Chart(salesTrendCtx, {
+                        type: 'line',
+                        data: {
+                            labels: salesTrendData.labels,
+                            datasets: [{
+                                label: 'ရောင်းရငွေ',
+                                data: salesTrendData.data,
+                                borderColor: 'rgba(79, 70, 229, 1)',
+                                backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                                fill: true,
+                                tension: 0.4,
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            scales: {
+                                y: { ticks: { color: textColor }, grid: { color: gridColor } },
+                                x: { ticks: { color: textColor }, grid: { color: gridColor } }
+                            },
+                            plugins: { legend: { labels: { color: textColor } } }
+                        }
+                    });
+
+                    // Product Sales Chart
+                    const productSalesCtx = document.getElementById('productSalesChart').getContext('2d');
+                    const productSalesData = analysis.prepareProductSalesData();
+                    if (state.charts.productSales) state.charts.productSales.destroy();
+                    state.charts.productSales = new Chart(productSalesCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: productSalesData.labels,
+                            datasets: [{
+                                label: 'စုစုပေါင်း ရောင်းရငွေ',
+                                data: productSalesData.data,
+                                backgroundColor: ['#4f46e5', '#7c3aed', '#2563eb', '#1d4ed8', '#0ea5e9'],
+                            }]
+                        },
+                        options: {
+                            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                            scales: {
+                                y: { ticks: { color: textColor }, grid: { color: 'transparent' } },
+                                x: { ticks: { color: textColor }, grid: { color: gridColor } }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+
+                    // Monthly Profit Chart
+                    const monthlyProfitCtx = document.getElementById('monthlyProfitChart').getContext('2d');
+                    const monthlyProfitData = analysis.prepareMonthlyProfitData();
+                    if (state.charts.monthlyProfit) state.charts.monthlyProfit.destroy();
+                    state.charts.monthlyProfit = new Chart(monthlyProfitCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: monthlyProfitData.labels,
+                            datasets: [{
+                                label: 'အသားတင်အမြတ်',
+                                data: monthlyProfitData.data,
+                                backgroundColor: '#10b981',
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            scales: {
+                                y: { ticks: { color: textColor }, grid: { color: gridColor } },
+                                x: { ticks: { color: textColor }, grid: { color: gridColor } }
+                            },
+                            plugins: { legend: { labels: { color: textColor } } }
+                        }
+                    });
+
+                    // Expense Category Chart
+                    const expenseCategoryCtx = document.getElementById('expenseCategoryChart').getContext('2d');
+                    const expenseCategoryData = analysis.prepareExpenseCategoryData();
+                    if (state.charts.expenseCategory) state.charts.expenseCategory.destroy();
+                    state.charts.expenseCategory = new Chart(expenseCategoryCtx, {
+                        type: 'pie',
+                        data: {
+                            labels: expenseCategoryData.labels,
+                            datasets: [{
+                                data: expenseCategoryData.data,
+                                backgroundColor: ['#ef4444', '#f97316', '#eab308', '#84cc16', '#22c55e'],
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            plugins: { legend: { position: 'top', labels: { color: textColor } } }
+                        }
+                    });
+                },
+
+                renderSalesTargetProgress: () => {
+                    const target = state.salesTarget;
+                    if (target <= 0) {
+                        DOM.targetProgressContainer.innerHTML = `<p class="text-center text-[var(--text-muted-color)]">ယခုလအတွက် ရည်မှန်းချက် သတ်မှတ်မထားပါ။</p>`;
+                        return;
+                    }
+                    
+                    const currentMonth = new Date().toISOString().slice(0, 7);
+                    const currentSales = state.allSales
+                        .filter(sale => sale.date.startsWith(currentMonth))
+                        .reduce((sum, sale) => sum + (sale.price * sale.quantity), 0);
+                    
+                    const percentage = Math.min((currentSales / target) * 100, 100);
+
+                    DOM.targetProgressContainer.innerHTML = `
+                        <div class="flex justify-between items-center mb-2 text-sm">
+                            <span class="font-medium">${ui.formatCurrency(currentSales)}</span>
+                            <span class="font-bold text-[var(--text-muted-color)]">Target: ${ui.formatCurrency(target)}</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
+                            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 h-4 rounded-full text-center text-white text-xs font-bold" style="width: ${percentage}%">
+                                ${Math.round(percentage)}%
+                            </div>
+                        </div>
+                    `;
+                },
+                renderSubscriptionModal: () => {
+                    const user = auth.currentUser;
+                    if (!user) return;
+
+                    if (state.userPlan === 'pro') {
+                        DOM.subscriptionModalContent.innerHTML = `
+                            <div class="text-center">
+                                <i class="fas fa-gem text-5xl text-purple-500 mb-4"></i>
+                                <h4 class="text-xl font-bold mb-2">You are a PRO User!</h4>
+                                <p class="text-[var(--text-muted-color)]">သင်သည် Pro Plan ၏ အကျိုးကျေးဇူးများအားလုံးကို အသုံးပြုနိုင်ပါပြီ။</p>
+                            </div>
+                        `;
+                    } else {
+                        DOM.subscriptionModalContent.innerHTML = `
+                            <div>
+                                <h4 class="text-xl font-bold mb-2 text-center text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary-start-color)] to-[var(--primary-end-color)]">Pro Plan သို့ အဆင့်မြှင့်တင်ရန်</h4>
+                                <p class="text-center text-sm text-[var(--text-muted-color)] mb-6">သင်၏လုပ်ငန်းကို ပိုမိုအဆင်ပြေချောမွေ့စေမည့် Feature များစွာကို ရယူလိုက်ပါ။</p>
+                                <ul class="space-y-3 mb-6 text-sm">
+                                    <li class="flex items-center gap-3"><i class="fas fa-star text-yellow-500 w-5 text-center"></i> <strong>အခမဲ့ Plan</strong> မှ Feature များအားလုံး</li>
+                                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500 w-5 text-center"></i> <strong>ဝန်ထမ်းအကောင့် (Staff Access)</strong> - ဝန်ထမ်းများအတွက် အကောင့်များဖွင့်ပေးနိုင်ခြင်း။</li>
+                                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500 w-5 text-center"></i> <strong>အသေးစိတ် Report များ (Advanced)</strong> - Chart များ၊ သုံးသပ်ချက်များဖြင့် လုပ်ငန်းကို ပိုမိုကောင်းမွန်အောင် စီမံနိုင်ခြင်း။</li>
+                                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500 w-5 text-center"></i> <strong>PDF Report တွင် Logo ထည့်သွင်းနိုင်ခြင်း</strong> - မိမိ Brand Logo ဖြင့် Professional Report များထုတ်ယူနိုင်ခြင်း။</li>
+                                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500 w-5 text-center"></i> <strong>ဦးစားပေး Customer Support</strong> - အကူအညီလိုအပ်ပါက ဦးစားပေး ဝန်ဆောင်မှုရရှိခြင်း။</li>
+                                </ul>
+                                <div class="border-t border-[var(--border-color)] pt-4">
+                                    <p class="text-center font-semibold">အဆင့်မြှင့်တင်ရန်</p>
+                                    <p class="text-center text-sm text-[var(--text-muted-color)] mt-1 mb-4">Pro Plan သို့ အဆင့်မြှင့်တင်လိုပါက အောက်ပါသင်၏ User ID ကို Copy ကူးယူပြီး Admin ကို ဆက်သွယ်ပေးပါ။</p>
+                                    <div class="flex items-center gap-2 p-2 rounded-lg bg-[var(--bg-color)]">
+                                        <input type="text" id="sub-modal-user-id" readonly class="flex-grow bg-transparent text-sm text-[var(--text-muted-color)] outline-none" value="${user.uid}">
+                                        <button id="copy-sub-modal-user-id-btn" class="btn text-sm py-1 px-3 bg-[var(--card-bg-color)] hover:bg-gray-200 dark:hover:bg-gray-600">
+                                            <i class="fas fa-copy mr-1"></i> Copy
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        // Re-add event listener for the new copy button
+                        document.getElementById('copy-sub-modal-user-id-btn').addEventListener('click', () => copyToClipboard(user.uid));
+                    }
+                }
+            };
+
+            // --- Firestore Module ---
+            const firestore = {
+                setupListeners: (userId) => {
+                    const unsubSales = onSnapshot(query(collection(db, 'artifacts', state.appId, 'users', userId, 'sales')), (snapshot) => {
+                        ui.updateConnectionStatus(!snapshot.metadata.fromCache);
+                        state.allSales = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                        state.allSales.sort((a, b) => (b.timestamp?.toDate() || new Date(b.date)) - (a.timestamp?.toDate() || new Date(a.date)));
+                        ui.updateDashboard();
+                    }, (error) => console.error("Sales listener error:", error));
+
+                    const unsubCustomers = onSnapshot(query(collection(db, 'artifacts', state.appId, 'users', userId, 'customers')), (snapshot) => {
+                        state.allCustomers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                        state.allCustomers.sort((a, b) => a.name.localeCompare(b.name));
+                        ui.updateDashboard();
+                    }, (error) => console.error("Customers listener error:", error));
+                    
+                    const unsubExpenses = onSnapshot(query(collection(db, 'artifacts', state.appId, 'users', userId, 'expenses')), (snapshot) => {
+                        state.allExpenses = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                        state.allExpenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+                        ui.updateDashboard();
+                    }, (error) => console.error("Expenses listener error:", error));
+
+                    const unsubSettings = onSnapshot(doc(db, 'artifacts', state.appId, 'users', userId, 'settings', 'monthlyGoal'), (doc) => {
+                        if (doc.exists()) {
+                            state.salesTarget = doc.data().target || 0;
+                            DOM.salesTargetInput.value = state.salesTarget > 0 ? state.salesTarget : '';
+                        } else {
+                            state.salesTarget = 0;
+                        }
+                        ui.renderSalesTargetProgress();
+                    }, (error) => console.error("Settings listener error:", error));
+                    
+                    // REAL-TIME PLAN CHANGE LISTENER
+                    const unsubPlan = onSnapshot(doc(db, 'artifacts', state.appId, 'users', userId, 'subscription', 'status'), (planDoc) => {
+                        const newPlan = planDoc.exists() ? planDoc.data().plan : 'free';
+                        // Check if the plan has actually changed to avoid unnecessary re-renders
+                        if (newPlan !== state.userPlan) {
+                            console.log(`Plan changed from ${state.userPlan} to ${newPlan}`);
+                            const oldPlan = state.userPlan;
+                            state.userPlan = newPlan;
+                            ui.updateFeaturesForPlan();
+
+                            // Show toast only on an actual upgrade from another plan
+                            if (newPlan === 'pro' && oldPlan && oldPlan !== 'pro') {
+                                ui.showToast('Congratulations! Your plan has been upgraded to PRO.', 'success');
+                            }
+                        }
+                    }, (error) => console.error("Subscription listener error:", error));
+
+                    state.unsubscribeAll = () => {
+                        unsubSales();
+                        unsubCustomers();
+                        unsubExpenses();
+                        unsubSettings();
+                        unsubPlan(); // Detach the new plan listener on logout
+                    };
+                },
+
+                checkUserPlan: async (userId) => {
+                    const planDocRef = doc(db, 'artifacts', state.appId, 'users', userId, 'subscription', 'status');
+                    const planDoc = await getDoc(planDocRef);
+                    if (planDoc.exists()) {
+                        return planDoc.data().plan;
+                    }
+                    return 'free'; // Default to free if no plan is set
+                },
+
+                setUserPlan: (userId, plan) => {
+                    const planDocRef = doc(db, 'artifacts', state.appId, 'users', userId, 'subscription', 'status');
+                    return setDoc(planDocRef, {
+                        plan: plan,
+                        updatedAt: serverTimestamp()
+                    });
+                },
+
+                addSale: (saleData) => {
+                    const user = auth.currentUser;
+                    if (!user) throw new Error("User not authenticated");
+                    return addDoc(collection(db, 'artifacts', state.appId, 'users', user.uid, 'sales'), saleData);
+                },
+                updateSale: (saleId, updatedData) => {
+                    const user = auth.currentUser;
+                    if (!user) throw new Error("User not authenticated");
+                    return updateDoc(doc(db, 'artifacts', state.appId, 'users', user.uid, 'sales', saleId), updatedData);
+                },
+                deleteSale: (saleId) => {
+                    const user = auth.currentUser;
+                    if (!user) throw new Error("User not authenticated");
+                    return deleteDoc(doc(db, 'artifacts', state.appId, 'users', user.uid, 'sales', saleId));
+                },
+
+                addCustomer: (customerData) => {
+                    const user = auth.currentUser;
+                    if (!user) throw new Error("User not authenticated");
+                    return addDoc(collection(db, 'artifacts', state.appId, 'users', user.uid, 'customers'), customerData);
+                },
+                updateCustomer: (customerId, updatedData) => {
+                    const user = auth.currentUser;
+                    if (!user) throw new Error("User not authenticated");
+                    return updateDoc(doc(db, 'artifacts', state.appId, 'users', user.uid, 'customers', customerId), updatedData);
+                },
+                deleteCustomer: async (customerId) => {
+                    const user = auth.currentUser;
+                    if (!user) throw new Error("User not authenticated");
+                    await deleteDoc(doc(db, 'artifacts', state.appId, 'users', user.uid, 'customers', customerId));
+                },
+
+                addExpense: (expenseData) => {
+                    const user = auth.currentUser;
+                    if (!user) throw new Error("User not authenticated");
+                    return addDoc(collection(db, 'artifacts', state.appId, 'users', user.uid, 'expenses'), expenseData);
+                },
+                updateExpense: (expenseId, updatedData) => {
+                    const user = auth.currentUser;
+                    if (!user) throw new Error("User not authenticated");
+                    return updateDoc(doc(db, 'artifacts', state.appId, 'users', user.uid, 'expenses', expenseId), updatedData);
+                },
+                deleteExpense: (expenseId) => {
+                    const user = auth.currentUser;
+                    if (!user) throw new Error("User not authenticated");
+                    return deleteDoc(doc(db, 'artifacts', state.appId, 'users', user.uid, 'expenses', expenseId));
+                },
+
+                saveSalesTarget: (targetAmount) => {
+                    const user = auth.currentUser;
+                    if (!user) throw new Error("User not authenticated");
+                    const settingsDoc = doc(db, 'artifacts', state.appId, 'users', user.uid, 'settings', 'monthlyGoal');
+                    return setDoc(settingsDoc, { target: targetAmount });
+                },
+            };
+
+            // --- Analysis Module ---
+            const analysis = {
+                prepareSalesTrendData: (days) => {
+                    const salesByDate = {};
+                    const today = new Date();
+                    for (let i = 0; i < days; i++) {
+                        const date = new Date(today);
+                        date.setDate(today.getDate() - i);
+                        const dateString = date.toISOString().split('T')[0];
+                        salesByDate[dateString] = 0;
+                    }
+
+                    state.allSales.forEach(sale => {
+                        if (salesByDate.hasOwnProperty(sale.date)) {
+                            salesByDate[sale.date] += sale.price * sale.quantity;
+                        }
+                    });
+
+                    const sortedDates = Object.keys(salesByDate).sort();
+                    return {
+                        labels: sortedDates.map(date => date.slice(5)), // MM-DD format
+                        data: sortedDates.map(date => salesByDate[date])
+                    };
+                },
+
+                prepareProductSalesData: () => {
+                    const salesByProduct = {};
+                    state.allSales.forEach(sale => {
+                        const productName = sale.product || 'Unknown';
+                        if (!salesByProduct[productName]) {
+                            salesByProduct[productName] = 0;
+                        }
+                        salesByProduct[productName] += sale.price * sale.quantity;
+                    });
+
+                    const sortedProducts = Object.entries(salesByProduct)
+                        .sort(([, a], [, b]) => b - a)
+                        .slice(0, 5); // Top 5 products
+
+                    return {
+                        labels: sortedProducts.map(([name]) => name),
+                        data: sortedProducts.map(([, total]) => total)
+                    };
+                },
+
+                prepareMonthlyProfitData: () => {
+                    const profitByMonth = {};
+                    state.allSales.forEach(sale => {
+                        const month = sale.date.substring(0, 7);
+                        if (!profitByMonth[month]) profitByMonth[month] = 0;
+                        profitByMonth[month] += (sale.price - sale.cost) * sale.quantity;
+                    });
+                    state.allExpenses.forEach(expense => {
+                        const month = expense.date.substring(0, 7);
+                        if (!profitByMonth[month]) profitByMonth[month] = 0;
+                        profitByMonth[month] -= expense.amount;
+                    });
+
+                    const sortedMonths = Object.keys(profitByMonth).sort();
+                    return {
+                        labels: sortedMonths,
+                        data: sortedMonths.map(month => profitByMonth[month])
+                    };
+                },
+
+                prepareExpenseCategoryData: () => {
+                    const expenseByCategory = {};
+                    state.allExpenses.forEach(expense => {
+                        const category = expense.category || 'Uncategorized';
+                        if (!expenseByCategory[category]) expenseByCategory[category] = 0;
+                        expenseByCategory[category] += expense.amount;
+                    });
+
+                    const sortedCategories = Object.entries(expenseByCategory).sort(([,a],[,b]) => b-a);
+                    return {
+                        labels: sortedCategories.map(([name]) => name),
+                        data: sortedCategories.map(([, total]) => total)
+                    };
+                }
+            };
+
+            // --- Event Handlers ---
+            const handlers = {
+                handleLogin: async (e) => {
+                    e.preventDefault();
+                    DOM.authError.textContent = '';
+                    ui.toggleButtonLoading(DOM.loginBtn, true);
+                    try {
+                        await signInWithEmailAndPassword(auth, DOM.emailInput.value, DOM.passwordInput.value);
+                    } catch (error) {
+                        console.error("Login Error:", error.code, error.message);
+                        DOM.authError.textContent = getAuthErrorMessage(error.code);
+                        DOM.authError.classList.add('text-red-500');
+                    } finally {
+                        ui.toggleButtonLoading(DOM.loginBtn, false);
+                    }
+                },
+
+                handleRegister: async () => {
+                    DOM.authError.textContent = '';
+                    ui.toggleButtonLoading(DOM.registerBtn, true);
+                    try {
+                        const userCredential = await createUserWithEmailAndPassword(auth, DOM.emailInput.value, DOM.passwordInput.value);
+                        await firestore.setUserPlan(userCredential.user.uid, 'free');
+                        await signOut(auth);
+                        DOM.authError.textContent = 'Account မှတ်ပုံတင်ခြင်းအောင်မြင်ပါသည်။ Login ဝင်နိုင်ပါပြီ။';
+                        DOM.authError.classList.remove('text-red-500');
+                        DOM.authError.classList.add('text-green-500');
+                        DOM.loginForm.reset();
+                    } catch (error) {
+                        console.error("Registration Error:", error.code, error.message);
+                        DOM.authError.textContent = getAuthErrorMessage(error.code);
+                        DOM.authError.classList.add('text-red-500');
+                    } finally {
+                        ui.toggleButtonLoading(DOM.registerBtn, false);
+                    }
+                },
+
+                handleAddSale: async (e) => {
+                    e.preventDefault();
+                    const requiredFields = [DOM.saleDateInput, DOM.productNameInput, DOM.quantityInput, DOM.priceInput];
+                    if (!validateForm(requiredFields)) return;
+
+                    ui.toggleButtonLoading(DOM.addSaleBtn, true);
+                    
+                    let customerId = null;
+                    let customerName = DOM.saleCustomerInput.value.trim();
+                    if (customerName) {
+                        const existingCustomer = state.allCustomers.find(c => c.name.toLowerCase() === customerName.toLowerCase());
+                        if (existingCustomer) {
+                            customerId = existingCustomer.id;
+                        } else {
+                            try {
+                                const newCustomerRef = await firestore.addCustomer({ name: customerName, phone: '', timestamp: serverTimestamp() });
+                                customerId = newCustomerRef.id;
+                                ui.showToast(`ဝယ်သူအသစ် "${customerName}" ကို ထည့်သွင်းပြီးပါပြီ။`, 'success');
+                            } catch (error) {
+                                console.error("Error creating new customer from sale:", error);
+                            }
+                        }
+                    }
+
+                    const newSale = {
+                        date: DOM.saleDateInput.value,
+                        product: DOM.productNameInput.value.trim() || 'N/A',
+                        plan: DOM.vpnPlanInput.value.trim(),
+                        quantity: parseInt(DOM.quantityInput.value),
+                        price: parseFloat(DOM.priceInput.value),
+                        cost: parseFloat(DOM.costInput.value) || 0,
+                        timestamp: serverTimestamp(),
+                        customerId: customerId,
+                        customerName: customerName || null
+                    };
+
+                    try {
+                        await firestore.addSale(newSale);
+                        ui.showToast("စာရင်းသွင်းခြင်း အောင်မြင်ပါသည်။", "success");
+                        DOM.addSaleForm.reset();
+                        DOM.saleDateInput.value = new Date().toISOString().split('T')[0];
+                        DOM.productNameInput.value = 'VPN'; 
+                        DOM.vpnPlanInput.value = '1 Month';
+                    } catch (error) {
+                        console.error("Error adding document: ", error);
+                        ui.showToast("စာရင်းသွင်းရာတွင် အမှားအယွင်းဖြစ်သွားပါသည်။", "error");
+                    } finally {
+                        ui.toggleButtonLoading(DOM.addSaleBtn, false);
+                    }
+                },
+
+                handleUpdateSale: async (e) => {
+                    e.preventDefault();
+                    ui.toggleButtonLoading(DOM.saveEditBtn, true);
+                    const updatedData = {
+                        date: DOM.editSaleDateInput.value,
+                        product: DOM.editProductNameInput.value.trim() || 'N/A',
+                        plan: DOM.editVpnPlanInput.value.trim(),
+                        quantity: parseInt(DOM.editQuantityInput.value),
+                        price: parseFloat(DOM.editPriceInput.value),
+                        cost: parseFloat(DOM.editCostInput.value) || 0,
+                    };
+                    try {
+                        await firestore.updateSale(DOM.editSaleIdInput.value, updatedData);
+                        ui.showToast("စာရင်းပြင်ဆင်ခြင်း အောင်မြင်ပါသည်။", "success");
+                        ui.closeModal(DOM.editModal);
+                    } catch (error) {
+                        console.error("Error updating document: ", error);
+                        ui.showToast("စာရင်းပြင်ဆင်ရာတွင် အမှားအယွင်းဖြစ်သွားပါသည်။", "error");
+                    } finally {
+                        ui.toggleButtonLoading(DOM.saveEditBtn, false);
+                    }
+                },
+                
+                handleSalesListClick: (e) => {
+                    const button = e.target.closest('button');
+                    if (!button) return;
+                    const saleId = button.dataset.id;
+                    if (!saleId) return;
+
+                    if (button.classList.contains('delete-btn')) {
+                        ui.showConfirmModal('စာရင်းဖျက်ရန်', 'ဤစာရင်းကို ဖျက်ရန်သေချာပါသလား?', async () => {
+                            try {
+                                await firestore.deleteSale(saleId);
+                                ui.showToast("စာရင်းကိုအောင်မြင်စွာဖျက်ပြီးပါပြီ။", "success");
+                            } catch (error) {
+                                ui.showToast("စာရင်းဖျက်ရာတွင် အမှားအယွင်းဖြစ်သွားပါသည်။", "error");
+                            }
+                        });
+                    }
+                    if (button.classList.contains('edit-btn')) {
+                        const saleToEdit = state.allSales.find(sale => sale.id === saleId);
+                        if (saleToEdit) {
+                            DOM.editSaleIdInput.value = saleToEdit.id;
+                            DOM.editSaleDateInput.value = saleToEdit.date;
+                            DOM.editProductNameInput.value = saleToEdit.product || '';
+                            DOM.editVpnPlanInput.value = saleToEdit.plan || '';
+                            DOM.editQuantityInput.value = saleToEdit.quantity;
+                            DOM.editPriceInput.value = saleToEdit.price;
+                            DOM.editCostInput.value = saleToEdit.cost || 0;
+                            ui.openModal(DOM.editModal);
+                        }
+                    }
+                },
+                
+                handleExport: (isAll) => {
+                    const dataSource = isAll ? state.allSales : state.filteredSales;
+                    const type = isAll ? 'all' : 'filtered';
+                    if (dataSource.length === 0) {
+                        ui.showToast(`"${type}" export လုပ်ရန် data မရှိပါ။`, 'error');
+                        return;
+                    }
+                    const headers = ['ID', 'Date', 'Customer', 'Product', 'Plan', 'Quantity', 'Price', 'Cost', 'Total', 'Profit'];
+                    const rows = dataSource.map(sale => {
+                        const total = sale.quantity * sale.price;
+                        const profit = (sale.price - (sale.cost || 0)) * sale.quantity;
+                        return [sale.id, sale.date, sale.customerName, sale.product, sale.plan, sale.quantity, sale.price, sale.cost || 0, total, profit]
+                            .map(val => `"${String(val ?? '').replace(/"/g, '""')}"`).join(',');
+                    });
+                    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), ...rows].join('\n');
+                    const link = document.createElement("a");
+                    link.setAttribute("href", encodeURI(csvContent));
+                    link.setAttribute("download", `sales_export_${type}_${new Date().toISOString().split('T')[0]}.csv`);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                },
+
+                handleChangePassword: async (e) => {
+                    e.preventDefault();
+                    const user = auth.currentUser;
+                    if (!user) return;
+
+                    ui.toggleButtonLoading(DOM.savePasswordBtn, true);
+                    try {
+                        const credential = EmailAuthProvider.credential(user.email, DOM.currentPasswordInput.value);
+                        await reauthenticateWithCredential(user, credential);
+                        await updatePassword(user, DOM.newPasswordInput.value);
+                        ui.showToast("Password updated successfully!", "success");
+                        DOM.changePasswordForm.reset();
+                    } catch (error) {
+                        ui.showToast(getAuthErrorMessage(error.code), "error");
+                    } finally {
+                        ui.toggleButtonLoading(DOM.savePasswordBtn, false);
+                    }
+                },
+
+                handleDeleteAccount: async (e) => {
+                    e.preventDefault();
+                    ui.showConfirmModal(
+                        'Account ကို အပြီးတိုင်ဖျက်ရန်?',
+                        'ဤလုပ်ဆောင်ချက်ကို နောက်ပြန်ပြင်၍မရပါ။ သင်၏ data များအားလုံး အပြီးတိုင် ဖျက်သိမ်းသွားပါမည်။ သေချာပါသလား?',
+                        async () => {
+                            const user = auth.currentUser;
+                            const password = DOM.deletePasswordInput.value;
+                            if (!user || !password) {
+                                ui.showToast("အတည်ပြုရန် သင်၏ password ကိုထည့်ပါ။", "error");
+                                return;
+                            }
+                            
+                            ui.toggleButtonLoading(DOM.deleteAccountBtn, true);
+                            try {
+                                const credential = EmailAuthProvider.credential(user.email, password);
+                                await reauthenticateWithCredential(user, credential);
+                                
+                                const collectionsToDelete = ['sales', 'customers', 'expenses', 'settings', 'subscription'];
+                                const deletePromises = [];
+
+                                for (const coll of collectionsToDelete) {
+                                    const snapshot = await getDocs(collection(db, 'artifacts', state.appId, 'users', user.uid, coll));
+                                    snapshot.docs.forEach(doc => deletePromises.push(deleteDoc(doc.ref)));
+                                }
+                                
+                                await Promise.all(deletePromises);
+                                await deleteUser(user);
+                                ui.showToast("Account ကို အောင်မြင်စွာဖျက်ပြီးပါပြီ။", "success");
+                                ui.closeModal(DOM.profileModal);
+                            } catch (error) {
+                                ui.showToast(getAuthErrorMessage(error.code), "error");
+                            } finally {
+                                ui.toggleButtonLoading(DOM.deleteAccountBtn, false);
+                            }
+                        }
+                    );
+                },
+
+                handleAddCustomer: async (e) => {
+                    e.preventDefault();
+                    if (!validateForm([DOM.customerNameInput])) return;
+                    
+                    const newCustomer = {
+                        name: DOM.customerNameInput.value.trim(),
+                        phone: DOM.customerPhoneInput.value.trim(),
+                        timestamp: serverTimestamp()
+                    };
+                    
+                    try {
+                        await firestore.addCustomer(newCustomer);
+                        ui.showToast("ဝယ်သူအသစ်ထည့်ခြင်း အောင်မြင်ပါသည်။", "success");
+                        DOM.addCustomerForm.reset();
+                    } catch (error) {
+                        console.error("Error adding customer:", error);
+                        ui.showToast("ဝယ်သူအသစ်ထည့်ရာတွင် အမှားအယွင်းဖြစ်သွားပါသည်။", "error");
+                    }
+                },
+
+                handleCustomersListClick: (e) => {
+                    const card = e.target.closest('.card');
+                    if (!card) return;
+                    const customerId = card.dataset.id;
+                    const customer = state.allCustomers.find(c => c.id === customerId);
+                    if (customer) {
+                        ui.renderCustomerModal(customer);
+                    }
+                },
+
+                handleUpdateCustomer: async (e) => {
+                    e.preventDefault();
+                    const customerId = DOM.editCustomerId.value;
+                    const updatedData = {
+                        name: DOM.editCustomerName.value.trim(),
+                        phone: DOM.editCustomerPhone.value.trim(),
+                    };
+                    try {
+                        await firestore.updateCustomer(customerId, updatedData);
+                        ui.showToast("Customer details updated.", "success");
+                        ui.closeModal(DOM.customerModal);
+                    } catch (error) {
+                        console.error("Error updating customer:", error);
+                        ui.showToast("Failed to update customer.", "error");
+                    }
+                },
+
+                handleDeleteCustomer: () => {
+                    const customerId = DOM.editCustomerId.value;
+                    const customerName = DOM.editCustomerName.value;
+                    ui.showConfirmModal(
+                        `Delete ${customerName}?`,
+                        "This will only delete the customer, not their past sales records. Are you sure?",
+                        async () => {
+                            try {
+                                await firestore.deleteCustomer(customerId);
+                                ui.showToast("Customer deleted.", "success");
+                                ui.closeModal(DOM.customerModal);
+                            } catch (error) {
+                                console.error("Error deleting customer:", error);
+                                ui.showToast("Failed to delete customer.", "error");
+                            }
+                        }
+                    );
+                },
+
+                handleAddExpense: async (e) => {
+                    e.preventDefault();
+                    if (!validateForm([DOM.expenseDateInput, DOM.expenseCategoryInput, DOM.expenseAmountInput])) return;
+
+                    const newExpense = {
+                        date: DOM.expenseDateInput.value,
+                        category: DOM.expenseCategoryInput.value.trim(),
+                        amount: parseFloat(DOM.expenseAmountInput.value),
+                        description: DOM.expenseDescriptionInput.value.trim(),
+                        timestamp: serverTimestamp()
+                    };
+
+                    try {
+                        await firestore.addExpense(newExpense);
+                        ui.showToast("အသုံးစရိတ်ထည့်ခြင်း အောင်မြင်ပါသည်။", "success");
+                        DOM.addExpenseForm.reset();
+                        DOM.expenseDateInput.value = new Date().toISOString().split('T')[0];
+                    } catch(error) {
+                        console.error("Error adding expense:", error);
+                        ui.showToast("အသုံးစရိတ်ထည့်ရာတွင် အမှားအယွင်းဖြစ်သွားပါသည်။", "error");
+                    }
+                },
+
+                handleExpensesListClick: (e) => {
+                    const button = e.target.closest('button');
+                    if (!button) return;
+                    const expenseId = button.dataset.id;
+                    if (!expenseId) return;
+
+                    if (button.classList.contains('delete-expense-btn')) {
+                        ui.showConfirmModal('အသုံးစရိတ်ဖျက်ရန်', 'ဤစာရင်းကို ဖျက်ရန်သေချာပါသလား?', async () => {
+                            try {
+                                await firestore.deleteExpense(expenseId);
+                                ui.showToast("အသုံးစရိတ်ကိုအောင်မြင်စွာဖျက်ပြီးပါပြီ။", "success");
+                            } catch (error) {
+                                ui.showToast("အသုံးစရိတ်ဖျက်ရာတွင် အမှားအယွင်းဖြစ်သွားပါသည်။", "error");
+                            }
+                        });
+                    }
+                    if (button.classList.contains('edit-expense-btn')) {
+                        const expenseToEdit = state.allExpenses.find(exp => exp.id === expenseId);
+                        if (expenseToEdit) {
+                            DOM.editExpenseId.value = expenseToEdit.id;
+                            DOM.editExpenseDate.value = expenseToEdit.date;
+                            DOM.editExpenseCategory.value = expenseToEdit.category;
+                            DOM.editExpenseAmount.value = expenseToEdit.amount;
+                            DOM.editExpenseDescription.value = expenseToEdit.description || '';
+                            ui.openModal(DOM.editExpenseModal);
+                        }
+                    }
+                },
+
+                handleUpdateExpense: async (e) => {
+                    e.preventDefault();
+                    const expenseId = DOM.editExpenseId.value;
+                    const updatedData = {
+                        date: DOM.editExpenseDate.value,
+                        category: DOM.editExpenseCategory.value.trim(),
+                        amount: parseFloat(DOM.editExpenseAmount.value),
+                        description: DOM.editExpenseDescription.value.trim(),
+                    };
+                    try {
+                        await firestore.updateExpense(expenseId, updatedData);
+                        ui.showToast("Expense details updated.", "success");
+                        ui.closeModal(DOM.editExpenseModal);
+                    } catch (error) {
+                        console.error("Error updating expense:", error);
+                        ui.showToast("Failed to update expense.", "error");
+                    }
+                },
+
+                handleSaveTarget: async () => {
+                    const target = parseFloat(DOM.salesTargetInput.value);
+                    if (isNaN(target) || target < 0) {
+                        ui.showToast("ကျေးဇူးပြု၍ မှန်ကန်သော ကိန်းဂဏန်းတစ်ခုထည့်ပါ။", "error");
+                        return;
+                    }
+                    try {
+                        await firestore.saveSalesTarget(target);
+                        ui.showToast("ရည်မှန်းချက်ကို အောင်မြင်စွာ သိမ်းဆည်းပြီးပါပြီ။", "success");
+                    } catch (error) {
+                        console.error("Error saving sales target:", error);
+                        ui.showToast("ရည်မှန်းချက်ကို သိမ်းဆည်းရာတွင် အမှားအယွင်းဖြစ်သွားပါသည်။", "error");
+                    }
+                },
+
+                handleDownloadPdf: () => {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+                    const currentMonth = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
+                    const currentMonthISO = new Date().toISOString().slice(0, 7);
+                    
+                    const monthSales = state.allSales.filter(s => s.date.startsWith(currentMonthISO));
+                    const monthExpenses = state.allExpenses.filter(e => e.date.startsWith(currentMonthISO));
+
+                    const totalRevenue = monthSales.reduce((sum, s) => sum + s.price * s.quantity, 0);
+                    const grossProfit = monthSales.reduce((sum, s) => sum + (s.price - s.cost) * s.quantity, 0);
+                    const totalExpenses = monthExpenses.reduce((sum, e) => sum + e.amount, 0);
+                    const netProfit = grossProfit - totalExpenses;
+
+                    if (state.logoBase64) {
+                        try {
+                            doc.addImage(state.logoBase64, 'PNG', 150, 10, 40, 15);
+                        } catch(e) {
+                            console.error("Error adding logo to PDF", e);
+                            ui.showToast("Logo ထည့်သွင်းရာတွင် အမှားအယွင်းဖြစ်သွားပါသည်။", "error");
+                        }
+                    }
+
+                    doc.setFontSize(18);
+                    doc.text(`Monthly Report - ${currentMonth}`, 14, 22);
+                    doc.setFontSize(11);
+                    doc.setTextColor(100);
+                    doc.text(`Report generated on: ${new Date().toLocaleDateString()}`, 14, 28);
+
+                    doc.setFontSize(12);
+                    doc.setTextColor(0);
+                    doc.text("Summary:", 14, 40);
+                    doc.autoTable({
+                        startY: 42,
+                        head: [['Metric', 'Amount']],
+                        body: [
+                            ['Total Revenue', ui.formatCurrency(totalRevenue)],
+                            ['Gross Profit', ui.formatCurrency(grossProfit)],
+                            ['Total Expenses', ui.formatCurrency(totalExpenses)],
+                            [{ content: 'Net Profit', styles: { fontStyle: 'bold' } }, { content: ui.formatCurrency(netProfit), styles: { fontStyle: 'bold' } }],
+                        ],
+                        theme: 'grid',
+                        styles: { cellPadding: 2 },
+                        headStyles: { fillColor: [22, 160, 133] }
+                    });
+                    
+                    doc.save(`Sales_Report_${currentMonthISO}.pdf`);
+                    ui.showToast("PDF Report downloading...", "success");
+                },
+
+                handleLogoUpload: (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        state.logoBase64 = event.target.result;
+                        DOM.logoPreview.src = state.logoBase64;
+                        DOM.logoPreview.classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            
+            // --- Helper Functions ---
+            function getAuthErrorMessage(code) {
+                switch (code) {
+                    case 'auth/invalid-email': return 'Email လိပ်စာ မှားယွင်းနေပါသည်။';
+                    case 'auth/user-not-found': return 'ဤ Email ဖြင့် account မရှိပါ။';
+                    case 'auth/wrong-password': return 'Password မှားယွင်းနေပါသည်။';
+                    case 'auth/weak-password': return 'Password အနည်းဆုံး စာလုံး ၆ လုံးရှိရပါမည်။';
+                    case 'auth/email-already-in-use': return 'ဤ Email ဖြင့် account ဖွင့်ပြီးသားဖြစ်ပါသည်။';
+                    case 'auth/requires-recent-login': return 'လုံခြုံရေးအရ အချိန်အနည်းငယ်အတွင်း ပြန်လည် login ဝင်ရန်လိုအပ်ပါသည်။';
+                    case 'auth/operation-not-allowed': return 'Login ပြုလုပ်ခွင့်မရှိပါ။ Firebase Project တွင် Email/Password Sign-in ကို Enable လုပ်ပြီး၊ HTML file ထဲက firebaseConfig မှန်မမှန် သေချာစစ်ဆေးပါ။';
+                    default: 
+                        console.error(`Unhandled Auth Error Code: ${code}`);
+                        return `An unknown error occurred. (Error: ${code})`;
+                }
+            }
+
+            function copyToClipboard(text) {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    ui.showToast("User ID ကို copy ကူးပြီးပါပြီ။", "success");
+                } catch (err) {
+                    ui.showToast("User ID ကို copy ကူးမရပါ။", "error");
+                }
+                document.body.removeChild(textArea);
+            }
+
+            function validateForm(fields) {
+                let isValid = true;
+                fields.forEach(input => {
+                    input.classList.remove('invalid');
+                    if (!input.value.trim()) {
+                        input.classList.add('invalid');
+                        isValid = false;
+                    }
+                });
+                if (!isValid) {
+                    ui.showToast("ကျေးဇူးပြု၍ အနီရောင်ပြထားသော အကွက်များကို ဖြည့်စွက်ပါ။", "error");
+                }
+                return isValid;
+            }
+
+            // --- Event Listener Setup ---
+            function initEventListeners() {
+                DOM.authThemeToggle.addEventListener('change', ui.toggleTheme);
+                DOM.appThemeToggle.addEventListener('change', ui.toggleTheme);
+                DOM.loginForm.addEventListener('submit', handlers.handleLogin);
+                DOM.registerBtn.addEventListener('click', handlers.handleRegister);
+                DOM.logoutBtn.addEventListener('click', () => signOut(auth));
+                DOM.addSaleForm.addEventListener('submit', handlers.handleAddSale);
+                DOM.salesListContainer.addEventListener('click', handlers.handleSalesListClick);
+                
+                [DOM.filterStartDateInput, DOM.filterEndDateInput, DOM.searchInput].forEach(el => {
+                    el.addEventListener('input', ui.applyFiltersAndRender);
+                });
+
+                DOM.clearFilterBtn.addEventListener('click', () => { 
+                    DOM.filterStartDateInput.value = ''; 
+                    DOM.filterEndDateInput.value = '';
+                    DOM.searchInput.value = '';
+                    ui.applyFiltersAndRender(); 
+                });
+                
+                DOM.exportCsvBtn.addEventListener('click', () => handlers.handleExport(false));
+                DOM.exportAllCsvBtn.addEventListener('click', () => handlers.handleExport(true));
+                
+                DOM.editSaleForm.addEventListener('submit', handlers.handleUpdateSale);
+                DOM.closeModalBtn.addEventListener('click', () => ui.closeModal(DOM.editModal));
+                DOM.cancelEditBtn.addEventListener('click', () => ui.closeModal(DOM.editModal));
+                DOM.editModal.addEventListener('click', (e) => { if (e.target === DOM.editModal) ui.closeModal(DOM.editModal); });
+
+                DOM.closeProfileModalBtn.addEventListener('click', () => ui.closeModal(DOM.profileModal));
+                DOM.profileModal.addEventListener('click', (e) => { if (e.target === DOM.profileModal) ui.closeModal(DOM.profileModal); });
+                DOM.changePasswordForm.addEventListener('submit', handlers.handleChangePassword);
+                DOM.deleteAccountForm.addEventListener('submit', handlers.handleDeleteAccount);
+                DOM.copyUserIdBtn.addEventListener('click', () => copyToClipboard(DOM.userIdDisplay.value));
+                
+                DOM.moreMenuBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    DOM.moreMenuDropdown.classList.toggle('hidden');
+                });
+                document.addEventListener('click', () => DOM.moreMenuDropdown.classList.add('hidden'));
+
+                DOM.menuProfileBtn.addEventListener('click', (e) => { e.preventDefault(); ui.openModal(DOM.profileModal); });
+                
+                const openSubscriptionModal = (e) => {
+                    e.preventDefault();
+                    ui.renderSubscriptionModal();
+                    ui.openModal(DOM.subscriptionModal);
+                };
+                DOM.menuSubscriptionBtn.addEventListener('click', openSubscriptionModal);
+                DOM.upgradeFromAnalysisBtn.addEventListener('click', openSubscriptionModal);
+                DOM.closeSubscriptionModalBtn.addEventListener('click', () => ui.closeModal(DOM.subscriptionModal));
+                DOM.subscriptionModal.addEventListener('click', (e) => { if (e.target === DOM.subscriptionModal) ui.closeModal(DOM.subscriptionModal); });
+
+
+                const simpleModals = [
+                    { btn: DOM.menuAboutBtn, modal: DOM.aboutModal, closeBtn: DOM.closeAboutModalBtn, okBtn: DOM.aboutModalOkBtn },
+                ];
+                simpleModals.forEach(({ btn, modal, closeBtn, okBtn }) => {
+                    btn.addEventListener('click', (e) => { e.preventDefault(); ui.openModal(modal); });
+                    closeBtn.addEventListener('click', () => ui.closeModal(modal));
+                    okBtn.addEventListener('click', () => ui.closeModal(modal));
+                });
+                
+                DOM.confirmCancelBtn.addEventListener('click', () => ui.closeModal(DOM.confirmModal));
+                DOM.confirmOkBtn.addEventListener('click', () => {
+                    if (state.confirmCallback) state.confirmCallback();
+                    ui.closeModal(DOM.confirmModal);
+                });
+                DOM.confirmModal.addEventListener('click', (e) => { if (e.target === DOM.confirmModal) ui.closeModal(DOM.confirmModal); });
+
+                const tabs = [
+                    { btn: DOM.tabDaily, view: DOM.dailyView },
+                    { btn: DOM.tabMonthly, view: DOM.monthlyView },
+                    { btn: DOM.tabCustomers, view: DOM.customersView },
+                    { btn: DOM.tabExpenses, view: DOM.expensesView },
+                    { btn: DOM.tabAnalysis, view: DOM.analysisView },
+                    { btn: DOM.tabStaff, view: DOM.staffView },
+                    { btn: DOM.tabGoals, view: DOM.goalsView }
+                ];
+                tabs.forEach(tab => {
+                    tab.btn.addEventListener('click', () => {
+                        if (tab.btn.classList.contains('disabled')) {
+                            ui.showToast("ဤ Feature ကို အသုံးပြုရန် Pro Plan သို့ Upgrade လုပ်ပါ။", "error");
+                            return;
+                        }
+                        tabs.forEach(t => {
+                            t.btn.classList.remove('active');
+                            t.view.classList.add('hidden');
+                        });
+                        tab.btn.classList.add('active');
+                        tab.view.classList.remove('hidden');
+                    });
+                });
+
+                DOM.addCustomerForm.addEventListener('submit', handlers.handleAddCustomer);
+                DOM.customerSearchInput.addEventListener('input', ui.renderCustomersList);
+                DOM.customersListContainer.addEventListener('click', handlers.handleCustomersListClick);
+                DOM.closeCustomerModalBtn.addEventListener('click', () => ui.closeModal(DOM.customerModal));
+                DOM.customerModal.addEventListener('click', (e) => { if (e.target === DOM.customerModal) ui.closeModal(DOM.customerModal); });
+                DOM.editCustomerForm.addEventListener('submit', handlers.handleUpdateCustomer);
+                DOM.deleteCustomerBtn.addEventListener('click', handlers.handleDeleteCustomer);
+
+                DOM.addExpenseForm.addEventListener('submit', handlers.handleAddExpense);
+                DOM.expensesListContainer.addEventListener('click', handlers.handleExpensesListClick);
+                DOM.closeEditExpenseModalBtn.addEventListener('click', () => ui.closeModal(DOM.editExpenseModal));
+                DOM.cancelEditExpenseBtn.addEventListener('click', () => ui.closeModal(DOM.editExpenseModal));
+                DOM.editExpenseModal.addEventListener('click', (e) => { if (e.target === DOM.editExpenseModal) ui.closeModal(DOM.editExpenseModal); });
+                DOM.editExpenseForm.addEventListener('submit', handlers.handleUpdateExpense);
+
+                DOM.saveTargetBtn.addEventListener('click', handlers.handleSaveTarget);
+                DOM.downloadPdfBtn.addEventListener('click', handlers.handleDownloadPdf);
+                DOM.logoUpload.addEventListener('change', handlers.handleLogoUpload);
+
+                window.addEventListener('online', () => ui.updateConnectionStatus(true));
+                window.addEventListener('offline', () => ui.updateConnectionStatus(false));
+            }
+
+            // --- Main App Initialization ---
+            async function handleAuthState(user) {
+                if (user && !user.isAnonymous) {
+                    DOM.userEmailDisplay.textContent = user.email;
+                    DOM.dropdownUserEmail.textContent = user.email;
+                    DOM.userIdDisplay.value = user.uid;
+
+                    // Fetch the plan and set up listeners
+                    const plan = await firestore.checkUserPlan(user.uid);
+                    state.userPlan = plan;
+                    firestore.setupListeners(user.uid);
+                    
+                    DOM.initialLoader.classList.add('hidden');
+                    DOM.authSection.classList.add('hidden');
+                    DOM.appSection.classList.remove('hidden');
+                    ui.updateFeaturesForPlan();
+
+                } else {
+                    if (typeof state.unsubscribeAll === 'function') {
+                        state.unsubscribeAll();
+                    }
+                    state.allSales = [];
+                    state.allCustomers = [];
+                    state.allExpenses = [];
+                    state.salesTarget = 0;
+                    state.userPlan = null;
+                    
+                    DOM.initialLoader.classList.add('hidden');
+                    DOM.appSection.classList.add('hidden');
+                    DOM.authSection.classList.remove('hidden');
+                    ui.updateDashboard();
+                }
+            }
+
+            function init() {
+                console.log(`Initializing app with Project ID: ${app.options.projectId} and App ID: ${state.appId}`);
+                
+                document.addEventListener('contextmenu', event => event.preventDefault());
+                
+                enableIndexedDbPersistence(db).catch(console.warn);
+
+                initEventListeners();
+
+                const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                ui.applyTheme(savedTheme);
+                DOM.saleDateInput.value = new Date().toISOString().split('T')[0];
+                DOM.expenseDateInput.value = new Date().toISOString().split('T')[0];
+
+                onAuthStateChanged(auth, user => {
+                    if (!state.isAuthReady) {
+                        state.isAuthReady = true;
+                    }
+                    handleAuthState(user).catch(console.error);
+                });
+
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    signInWithCustomToken(auth, __initial_auth_token).catch(error => {
+                        console.error("Automatic sign-in failed:", error);
+                        DOM.authError.textContent = "Session authentication failed.";
+                    });
+                }
+            }
+
+            init();
+        });
+    </script>
+</body>
+</html>
