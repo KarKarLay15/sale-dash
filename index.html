@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>SalesDash Mobile & Desktop</title>
 
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="manifest.json">
 
     <meta name="theme-color" content="#2563eb">
 
@@ -24,7 +24,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
     
     <style>
-        /* သင့်ရဲ့ style code တွေက ဒီအတိုင်းပဲဖြစ်ပါတယ် (No changes here) */
         :root {
             --bg-color: #f4f7fe;
             --card-bg-color: #ffffff;
@@ -38,7 +37,6 @@
             --toast-bg: #192133;
             --toast-text: #e2e8f0;
         }
-
         html.dark {
             --bg-color: #0b1120;
             --card-bg-color: #192133;
@@ -48,31 +46,105 @@
             --toast-bg: #e2e8f0;
             --toast-text: #1a202c;
         }
-        /* ... ကျန်တဲ့ style code တွေအားလုံး ... */
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-color); transition: background-color 0.3s, color 0.3s; user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; }
-        .card { background-color: var(--card-bg-color); transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; border: 1px solid var(--border-color); }
-        .card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
-        .btn { transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
-        .btn:hover { transform: translateY(-2px); }
-        .btn:disabled { opacity: 0.7; cursor: not-allowed; transform: translateY(0); }
-        .btn-primary-solid { background-color: var(--primary-color); }
-        .btn-primary-solid:hover { background-color: var(--primary-hover-color); box-shadow: 0 7px 14px rgba(37, 99, 235, 0.25), 0 3px 6px rgba(0, 0, 0, 0.08); }
-        .form-input { background-color: var(--bg-color); border-color: var(--border-color); }
-        .form-input:focus { --tw-ring-color: var(--primary-color); border-color: var(--primary-color); }
-        .form-input.invalid { border-color: #ef4444; --tw-ring-color: #ef4444; }
-        .modal { transition: opacity 0.25s ease; backdrop-filter: blur(5px); }
-        .tab { transition: all 0.3s; border-bottom: 2px solid transparent; }
-        .tab.active { color: var(--primary-start-color); border-bottom-color: var(--primary-start-color); }
-        html.dark .tab.active { color: #a78bfa; border-bottom-color: #a78bfa; }
-        .tab.disabled { color: var(--text-muted-color); cursor: not-allowed; opacity: 0.6; }
-        .pagination-btn { min-width: 40px; }
-        .pagination-btn.active { background-color: var(--primary-color); color: white; font-weight: bold; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        .card {
+            background-color: var(--card-bg-color);
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+            border: 1px solid var(--border-color);
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .btn {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: translateY(0);
+        }
+        .btn-primary-solid {
+            background-color: var(--primary-color);
+        }
+        .btn-primary-solid:hover {
+            background-color: var(--primary-hover-color);
+            box-shadow: 0 7px 14px rgba(37, 99, 235, 0.25), 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+        .form-input {
+            background-color: var(--bg-color);
+            border-color: var(--border-color);
+        }
+        .form-input:focus {
+            --tw-ring-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        .form-input.invalid {
+            border-color: #ef4444;
+            --tw-ring-color: #ef4444;
+        }
+        .modal {
+            transition: opacity 0.25s ease;
+            backdrop-filter: blur(5px);
+        }
+        .tab {
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .tab.active {
+            color: var(--primary-start-color);
+            border-bottom-color: var(--primary-start-color);
+        }
+        html.dark .tab.active {
+            color: #a78bfa;
+            border-bottom-color: #a78bfa;
+        }
+        .tab.disabled {
+            color: var(--text-muted-color);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .pagination-btn {
+            min-width: 40px;
+        }
+        .pagination-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .dropdown-menu { animation: slideIn 0.2s ease-out forwards; }
-        @keyframes toastIn { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes toastOut { from { transform: translateY(0); opacity: 1; } to { transform: translateY(100%); opacity: 0; } }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .dropdown-menu {
+            animation: slideIn 0.2s ease-out forwards;
+        }
+        @keyframes toastIn {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes toastOut {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(100%); opacity: 0; }
+        }
         .toast-in { animation: toastIn 0.5s ease-out forwards; }
         .toast-out { animation: toastOut 0.5s ease-in forwards; }
         .theme-switch-wrapper { display: flex; align-items: center; }
@@ -82,14 +154,21 @@
         .slider:before { background-color: #fff; bottom: 3px; content: ""; height: 20px; left: 3px; position: absolute; transition: .4s; width: 20px; border-radius: 50%; }
         input:checked + .slider { background-image: linear-gradient(to right, var(--primary-start-color), var(--primary-end-color)); }
         input:checked + .slider:before { transform: translateX(24px); }
-        .spinner { animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .pro-feature { display: none; }
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .pro-feature {
+            display: none;
+        }
     </style>
 </head>
 <body>
+    
     <script>
-        // Firebase Config ကိုလည်း ဒီအတိုင်းထားပါ
         window.firebaseConfig = {
           apiKey: "AIzaSyDpPITUwHiRlxbC16gR7mBAhubEYtPhENQ",
           authDomain: "sales-dashboard-1100a.firebaseapp.com",
@@ -101,26 +180,51 @@
     </script>
     
     <script type="module">
-        // သင့်ရဲ့ မူလ script code အရှည်ကြီးက ဒီနေရာမှာရှိပါတယ်
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        // ... a lot of imports ...
+        // ... (all your other imports remain the same)
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithCustomToken, updatePassword, EmailAuthProvider, reauthenticateWithCredential, deleteUser } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, doc, deleteDoc, updateDoc, serverTimestamp, enableIndexedDbPersistence, getDocs, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
 
         document.addEventListener('DOMContentLoaded', () => {
-            // ... a lot of code ...
-            
+            // ... (all your existing script code from the start)
+
             function init() {
-                // ... a lot of existing code in init() function ...
+                console.log(`Initializing app with Project ID: ${app.options.projectId} and App ID: ${state.appId}`);
                 
-                // 👇👇👇 SERVICE WORKER REGISTER SCRIPT ကို ဒီနေရာမှာ ထည့်သွင်းထားပါတယ် 👇👇👇
+                document.addEventListener('contextmenu', event => event.preventDefault());
+                
+                enableIndexedDbPersistence(db).catch(console.warn);
+
+                initEventListeners();
+
+                const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                ui.applyTheme(savedTheme);
+                DOM.saleDateInput.value = new Date().toISOString().split('T')[0];
+                DOM.expenseDateInput.value = new Date().toISOString().split('T')[0];
+
+                // --- SERVICE WORKER REGISTRATION (CORRECTED PATH) ---
                 if ('serviceWorker' in navigator) {
                     window.addEventListener('load', () => {
-                        navigator.serviceWorker.register('/sw.js')
-                            .then(registration => console.log('Service Worker registered:', registration))
+                        navigator.serviceWorker.register('sw.js')
+                            .then(registration => console.log('Service Worker registered successfully:', registration))
                             .catch(error => console.log('Service Worker registration failed:', error));
                     });
                 }
                 
-                // ... a lot of existing code in init() function ...
+                onAuthStateChanged(auth, user => {
+                    if (!state.isAuthReady) {
+                        state.isAuthReady = true;
+                    }
+                    handleAuthState(user).catch(console.error);
+                });
+
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    signInWithCustomToken(auth, __initial_auth_token).catch(error => {
+                        console.error("Automatic sign-in failed:", error);
+                        DOM.authError.textContent = "Session authentication failed.";
+                    });
+                }
             }
 
             init();
