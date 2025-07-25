@@ -1,21 +1,21 @@
 {
-  "name": "SalesDash Mobile",
+  "name": "SalesDash Mobile & Desktop",
   "short_name": "SalesDash",
   "description": "Professional Sales Dashboard for Myanmar Businesses",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#f4f7fe",
   "theme_color": "#2563eb",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/icons/icon-192x192.png",
+      "src": "./icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/icon-512x512.png",
+      "src": "./icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
